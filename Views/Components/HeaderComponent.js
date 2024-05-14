@@ -1,24 +1,48 @@
-import { Text, View, StyleSheet, ScrollView } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import React from "react";
+import { Button } from "react-native-elements";
 
-export default function HeaderComponent() {
+export default function HeaderComponent({ cats }) {
   return (
     <View style={styles.container}>
-      <Text style={styles.textStyle}>Header</Text>
-      <Text style={styles.textStyle}>Header</Text>
-      <Text style={styles.textStyle}>Header</Text>
+      {cats.slice(0, 3).map((item) => (
+        <Button
+          key={item.id}
+          title={item.name}
+          buttonStyle={styles.buttonStyle}
+          containerStyle={styles.buttonContainer}
+          titleStyle={styles.titleStyle}
+          onPress={() => console.log(item.name)}
+        />
+      ))}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 35,
+    height: "auto",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+
+    backgroundColor: "transparent",
   },
-  textStyle: {
-    marginHorizontal: 10,
+  buttonContainer: {
+    marginHorizontal: 8,
+    borderRadius: 17,
+    // height: 32,
+  },
+  buttonStyle: {
+    backgroundColor: "#ffb3b3",
+    // borderWidth: 1.5,
+    // borderColor: "white",
+    // borderRadius: 0,
+  },
+  titleStyle: {
+    // paddingBottom: 5,
+    color: "black",
+    fontWeight: "800",
+    fontSize: 13,
   },
 });

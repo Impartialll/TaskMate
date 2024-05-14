@@ -7,14 +7,17 @@ import {
   FontAwesome6,
 } from "@expo/vector-icons";
 
-import Tasks from "./tasks";
+import Home from "./home";
 import Goal from "./goal";
 import About from "./about";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
 const Tab = createBottomTabNavigator();
+
+import { createDrawerNavigator } from "@react-navigation/drawer";
+const Drawer = createDrawerNavigator();
+
 const screenOptions = {
   tabBarShowLabel: false,
   headerShown: false,
@@ -29,13 +32,13 @@ const screenOptions = {
   },
 };
 
-export default function NavigationTabs() {
+export default function Navigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen
           name="First View"
-          component={Tasks}
+          component={Home}
           options={{
             tabBarIcon: ({ focused }) => {
               return (

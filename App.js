@@ -1,14 +1,17 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import { Overlay } from "react-native-elements";
 
-import NavigationTabs from "./Views/NavigationTabs";
+import Navigation from "./Views/Navigation";
+import MyFAB from "./components/MyFAB";
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <NavigationTabs />
+      <Navigation />
+      <MyFAB />
       <StatusBar style="auto" />
     </SafeAreaView>
   );
