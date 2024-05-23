@@ -5,6 +5,12 @@
       "name": "плопо",
       "description": "уншщз",
       "category": "сссс"
+    },
+    {
+      "id": "0701",
+      "name": "task one",
+      "description": "some description",
+      "category": "else"
     }
   ],
   "categories": [

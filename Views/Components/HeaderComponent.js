@@ -2,17 +2,17 @@ import { Text, View, StyleSheet } from "react-native";
 import React from "react";
 import { Button } from "react-native-elements";
 
-export default function HeaderComponent({ cats }) {
+export default function HeaderComponent({ categories, setCat }) {
   return (
     <View style={styles.container}>
-      {cats.slice(0, 3).map((item) => (
+      {categories.slice(0, 3).map((item) => (
         <Button
           key={item.id}
           title={item.name}
           buttonStyle={styles.buttonStyle}
           containerStyle={styles.buttonContainer}
           titleStyle={styles.titleStyle}
-          onPress={() => console.log(item.name)}
+          onPress={() => setCat(item.name)}
         />
       ))}
     </View>

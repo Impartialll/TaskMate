@@ -18,7 +18,7 @@ export default function MyFAB() {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       {/* <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
       </Overlay> */}
       <MyModal isVisible={visible} toggleOverlay={toggleOverlay} />
@@ -35,7 +35,11 @@ export default function MyFAB() {
 }
 
 const styles = StyleSheet.create({
-  fabStyle: {
-    bottom: 60,
+  container: {
+    // position: "absolute",
+    bottom: 50,
   },
+  // fabStyle: {
+  //   bottom: 60,
+  // },
 });

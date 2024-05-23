@@ -32,13 +32,13 @@ const screenOptions = {
   },
 };
 
-export default function Navigation() {
+export default function Navigation({ tasks, cats, setCat }) {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen
-          name="First View"
-          component={Home}
+          name="Home"
+          children={() => <Home tasks={tasks} cats={cats} setCat={setCat} />}
           options={{
             tabBarIcon: ({ focused }) => {
               return (
@@ -56,7 +56,7 @@ export default function Navigation() {
           }}
         />
         <Tab.Screen
-          name="Seccond View"
+          name="Goal"
           component={Goal}
           options={{
             tabBarIcon: ({ focused }) => {
@@ -75,7 +75,7 @@ export default function Navigation() {
           }}
         />
         <Tab.Screen
-          name="Third View"
+          name="About"
           component={About}
           options={{
             tabBarIcon: ({ focused }) => {

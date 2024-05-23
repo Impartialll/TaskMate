@@ -13,8 +13,7 @@ import {
 import Entypo from "@expo/vector-icons/Entypo";
 
 import HeaderComponent from "./Components/HeaderComponent";
-import tasks from "../services/tasks";
-import categories from "../services/categories";
+import MyFAB from "../components/MyFAB";
 
 keyExtractor = (item, index) => index.toString();
 
@@ -33,31 +32,7 @@ const renderItem = ({ item }) => {
 
 const Separator = () => <View style={styles.itemSeparator} />;
 
-export default function Home() {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await tasks.getAll();
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-    fetchData();
-    fetchCats();
-  }, []);
-
-  const [cats, setCats] = useState([]);
-  const fetchCats = async () => {
-    try {
-      const response = await categories.getAll();
-      setCats(response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  };
-
+export default function Home({ tasks, cats, setCat }) {
   const RigthComponent = () => {
     return (
       <Tooltip popover={<Button></Button>}>
@@ -72,10 +47,23 @@ export default function Home() {
     );
   };
 
+  const LeftComponent = () => {
+    return (
+      <Button
+        title={"All"}
+        buttonStyle={styles.buttonStyle}
+        containerStyle={styles.buttonContainer}
+        titleStyle={styles.titleStyle}
+        onPress={() => setCat("All")}
+      />
+    );
+  };
+
   return (
     <View>
       <Header
-        centerComponent={<HeaderComponent cats={cats} />}
+        leftComponent={LeftComponent}
+        centerComponent={<HeaderComponent setCat={setCat} categories={cats} />}
         rightComponent={RigthComponent}
         centerContainerStyle={{
           justifyContent: "center",
@@ -90,12 +78,13 @@ export default function Home() {
         }}
       />
       <FlatList
-        data={data}
+        data={tasks}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <Separator />}
         contentContainerStyle={{ paddingBottom: 0 }}
       />
+      <MyFAB />
     </View>
   );
 }
@@ -107,5 +96,22 @@ const styles = StyleSheet.create({
   textStyle: {
     width: "100%",
     fontSize: 50,
+  },
+  buttonContainer: {
+    marginHorizontal: 8,
+    borderRadius: 17,
+    // height: 32,
+  },
+  buttonStyle: {
+    backgroundColor: "#ffb3b3",
+    // borderWidth: 1.5,
+    // borderColor: "white",
+    // borderRadius: 0,
+  },
+  titleStyle: {
+    // paddingBottom: 5,
+    color: "black",
+    fontWeight: "800",
+    fontSize: 13,
   },
 });
