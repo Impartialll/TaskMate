@@ -4,16 +4,12 @@ import { FAB, Overlay } from "react-native-elements";
 
 import { AntDesign } from "@expo/vector-icons";
 
-import Home from "../Views/home";
-import tasks from "../services/tasks";
-
 import MyModal from "./MyModal";
 
-export default function MyFAB() {
+export default function MyFAB({ fetchData }) {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
-    console.log(true);
     setVisible(!visible);
   };
 
@@ -21,7 +17,11 @@ export default function MyFAB() {
     <View style={styles.container}>
       {/* <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
       </Overlay> */}
-      <MyModal isVisible={visible} toggleOverlay={toggleOverlay} />
+      <MyModal
+        isVisible={visible}
+        toggleOverlay={toggleOverlay}
+        updateTasks={fetchData}
+      />
       <FAB
         placement="right"
         style={styles.fabStyle}
@@ -37,7 +37,7 @@ export default function MyFAB() {
 const styles = StyleSheet.create({
   container: {
     // position: "absolute",
-    bottom: 50,
+    bottom: 55,
   },
   // fabStyle: {
   //   bottom: 60,

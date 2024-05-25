@@ -8,28 +8,34 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-import { Button } from "react-native-elements";
+import { Button, Input } from "react-native-elements";
 
-import tasks from "../services/tasks";
+import tasks from "../../services/tasks";
 
-export default function MyModal({ isVisible, toggleOverlay }) {
+export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
   const [inputCategory, setCategory] = useState("");
 
   const handleSave = () => {
-    addHandler(inputName, inputDescription, inputCategory);
+    if (inputName != "") {
+      addHandler(inputName, inputDescription, inputCategory);
+    }
     toggleOverlay();
   };
 
   const addHandler = async (name, description, category) => {
     try {
+      const trimmedName = name.trim();
+      const trimmedDescription = description.trim();
+      const trimmedCategory = category.trim();
       const newData = {
-        name: name,
-        description: description,
-        category: category,
+        name: trimmedName,
+        description: trimmedDescription,
+        category: trimmedCategory,
       };
       await tasks.create(newData);
+      updateTasks();
     } catch (error) {
       console.error("Error adding the task:", error);
     }
@@ -40,7 +46,7 @@ export default function MyModal({ isVisible, toggleOverlay }) {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalHeaderText}>New task</Text>
-          <TextInput
+          {/* <TextInput
             style={styles.textInput}
             placeholder="Name your task"
             onChangeText={(text) => setName(text)}
@@ -54,14 +60,39 @@ export default function MyModal({ isVisible, toggleOverlay }) {
             style={styles.textInput}
             placeholder="Category"
             onChangeText={(text) => setCategory(text)}
+          /> */}
+          <Input
+            placeholder="Name your tasks"
+            onChangeText={(text) => setName(text)}
+          />
+          <Input
+            placeholder="Description (optional)"
+            onChangeText={(text) => setDescriptoion(text)}
+          />
+          <Input
+            placeholder="Category"
+            onChangeText={(text) => setCategory(text)}
           />
           <View style={styles.buttonsContainer}>
             <Button
               title="Close"
-              style={styles.button}
-              onPress={toggleOverlay}
+              containerStyle={styles.button}
+              // style={styles.button}
+              onPress={() => {
+                toggleOverlay();
+                setName("");
+                setDescriptoion("");
+                setCategory("");
+              }}
+              type="clear"
             />
-            <Button title="Save" style={styles.button} onPress={handleSave} />
+            <Button
+              title="Save"
+              containerStyle={styles.button}
+              // style={styles.button}
+              onPress={handleSave}
+              type="clear"
+            />
           </View>
         </View>
       </View>
@@ -79,6 +110,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    // borderWidth: 1,
+    // borderColor: "black",
   },
   button: {
     marginTop: 5,
@@ -105,6 +138,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
+    marginTop: 5,
   },
   textInput: {
     borderWidth: 1,

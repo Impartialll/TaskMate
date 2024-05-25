@@ -32,13 +32,20 @@ const screenOptions = {
   },
 };
 
-export default function Navigation({ tasks, cats, setCat }) {
+export default function Navigation({ tasks, cats, setCat, fetchData }) {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={screenOptions}>
         <Tab.Screen
           name="Home"
-          children={() => <Home tasks={tasks} cats={cats} setCat={setCat} />}
+          children={() => (
+            <Home
+              data={tasks}
+              cats={cats}
+              setCat={setCat}
+              fetchData={fetchData}
+            />
+          )}
           options={{
             tabBarIcon: ({ focused }) => {
               return (

@@ -47,7 +47,12 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Navigation tasks={data} cats={cats} setCat={setSelectedCategory} />
+      <Navigation
+        tasks={data}
+        cats={cats}
+        setCat={setSelectedCategory}
+        fetchData={fetchData}
+      />
       <StatusBar style="auto" />
     </SafeAreaView>
   );

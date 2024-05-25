@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, FlatList, View, Modal } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, FlatList, View } from "react-native";
 
 import {
   ListItem,
@@ -7,32 +7,22 @@ import {
   Header,
   Button,
   Tooltip,
-  Text,
 } from "react-native-elements";
+
+import HeaderComponent from "./Components/HeaderComponent";
+import RenderItem from "./Components/RenderItem";
+import MyFAB from "./fab/MyFAB";
 
 import Entypo from "@expo/vector-icons/Entypo";
 
-import HeaderComponent from "./Components/HeaderComponent";
-import MyFAB from "../components/MyFAB";
-
 keyExtractor = (item, index) => index.toString();
-
-const renderItem = ({ item }) => {
-  return (
-    <ListItem bottomDivider>
-      <Avatar title={item.name[0]} />
-      <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-      </ListItem.Content>
-      <ListItem.Chevron />
-    </ListItem>
-  );
-};
-
 const Separator = () => <View style={styles.itemSeparator} />;
 
-export default function Home({ tasks, cats, setCat }) {
+export default function Home({ data, cats, setCat, fetchData }) {
+  const renderItem = ({ item }) => (
+    <RenderItem item={item} fetchData={fetchData} />
+  );
+
   const RigthComponent = () => {
     return (
       <Tooltip popover={<Button></Button>}>
@@ -60,7 +50,7 @@ export default function Home({ tasks, cats, setCat }) {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Header
         leftComponent={LeftComponent}
         centerComponent={<HeaderComponent setCat={setCat} categories={cats} />}
@@ -78,20 +68,24 @@ export default function Home({ tasks, cats, setCat }) {
         }}
       />
       <FlatList
-        data={tasks}
+        data={data}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <Separator />}
         contentContainerStyle={{ paddingBottom: 0 }}
       />
-      <MyFAB />
+      <MyFAB fetchData={fetchData} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
+    height: "92%",
+  },
+  itemSeparator: {
+    marginVertical: 20,
   },
   textStyle: {
     width: "100%",
