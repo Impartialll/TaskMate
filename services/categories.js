@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://192.168.0.110:3001/categories";
+const baseUrl = "http://192.168.0.111:3001/categories";
 // const baseUrl = "https://74c7-31-41-68-53.ngrok-free.app/categories"; //temporary ngrok URL
 
 const getTest = () => {

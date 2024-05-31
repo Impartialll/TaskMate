@@ -1,6 +1,6 @@
 import { StyleSheet, View, Text } from "react-native";
 import React, { useState } from "react";
-import { FAB, Overlay } from "react-native-elements";
+import { FAB, Overlay } from "@rneui/base";
 
 import { AntDesign } from "@expo/vector-icons";
 

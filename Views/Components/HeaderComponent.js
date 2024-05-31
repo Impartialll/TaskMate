@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from "react-native";
 import React from "react";
-import { Button } from "react-native-elements";
+import { Button } from "@rneui/base";
 
 export default function HeaderComponent({ categories, setCat }) {
   return (

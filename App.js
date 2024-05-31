@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 
@@ -48,7 +48,7 @@ export default function App() {
   }, [selectedCategory]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaProvider style={styles.container}>
       <Navigation
         tasks={data}
         cats={cats}
@@ -56,7 +56,7 @@ export default function App() {
         fetchData={fetchData}
       />
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 

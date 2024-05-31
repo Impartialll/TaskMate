@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { ListItem, Avatar, Button, Text } from "react-native-elements";
+import { ListItem, Avatar, Button, Text } from "@rneui/base";
 import { StyleSheet } from "react-native";
 import tasks from "../../services/tasks";
-
-import { Swipeable, RectButton } from "react-native-gesture-handler";
 
 export default function RenderItem({ item, fetchData, navigation }) {
   const [isSwiped, setIsSwiped] = useState(false);
@@ -26,29 +24,32 @@ export default function RenderItem({ item, fetchData, navigation }) {
           taskName: item.name,
         });
       }}
-      onSwipe={() => setIsSwiped(true)}
-      onSwipeRelease={() => setIsSwiped(false)}
-      leftContent={
+      // onSwipe={() => setIsSwiped(true)}
+      // onSwipeRelease={() => setIsSwiped(false)}
+
+      leftContent={(reset) => (
         <Button
           title="Info"
           onPress={() => {
             setIsSwiped(false);
             alert("Info pressed");
+            reset();
           }}
           icon={{ name: "info", color: "white" }}
           buttonStyle={{ minHeight: "100%" }}
         />
+      )
       }
-      rightContent={
-        <Button
-          title="Delete"
-          onPress={() => {
-            setIsSwiped(false);
-            delHandler(item.id);
-          }}
-          icon={{ name: "delete", color: "white" }}
-          buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
-        />
+      rightContent={(reset) => (        <Button
+        title="Delete"
+        onPress={() => {
+          setIsSwiped(false);
+          delHandler(item.id);
+          reset();
+        }}
+        icon={{ name: "delete", color: "white" }}
+        buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
+      />)
       }
     >
       <Avatar title={item.name[0]} />

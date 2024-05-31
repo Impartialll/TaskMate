@@ -10,7 +10,7 @@ import React, { useState } from "react";
 
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
-import { Button, Input } from "react-native-elements";
+import { Button, Input } from "@rneui/base";
 
 import tasks from "../../services/tasks";
 

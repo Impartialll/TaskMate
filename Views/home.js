@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, FlatList, View } from "react-native";
-import { Header, Button, Tooltip } from "react-native-elements";
+import { Header, Button, Tooltip } from "@rneui/base";
 
 import { useNavigation } from "@react-navigation/native";
 
