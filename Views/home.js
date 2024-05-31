@@ -1,13 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, FlatList, View } from "react-native";
+import { Header, Button, Tooltip } from "react-native-elements";
 
-import {
-  ListItem,
-  Avatar,
-  Header,
-  Button,
-  Tooltip,
-} from "react-native-elements";
+import { useNavigation } from "@react-navigation/native";
 
 import HeaderComponent from "./Components/HeaderComponent";
 import RenderItem from "./Components/RenderItem";
@@ -20,7 +15,7 @@ const Separator = () => <View style={styles.itemSeparator} />;
 
 export default function Home({ data, cats, setCat, fetchData }) {
   const renderItem = ({ item }) => (
-    <RenderItem item={item} fetchData={fetchData} />
+    <RenderItem item={item} fetchData={fetchData} navigation={navigation} />
   );
 
   const RigthComponent = () => {
@@ -49,12 +44,17 @@ export default function Home({ data, cats, setCat, fetchData }) {
     );
   };
 
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Header
         leftComponent={LeftComponent}
         centerComponent={<HeaderComponent setCat={setCat} categories={cats} />}
         rightComponent={RigthComponent}
+        leftContainerStyle={{
+          justifyContent: "center",
+        }}
         centerContainerStyle={{
           justifyContent: "center",
         }}
@@ -72,7 +72,7 @@ export default function Home({ data, cats, setCat, fetchData }) {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <Separator />}
-        contentContainerStyle={{ paddingBottom: 0 }}
+        contentContainerStyle={styles.listStyle}
       />
       <MyFAB fetchData={fetchData} />
     </View>
@@ -81,11 +81,14 @@ export default function Home({ data, cats, setCat, fetchData }) {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-    height: "92%",
+    flex: 1,
+    // height: "90%",
+  },
+  listStyle: {
+    paddingBottom: "35%",
   },
   itemSeparator: {
-    marginVertical: 20,
+    marginVertical: 10,
   },
   textStyle: {
     width: "100%",

@@ -1,9 +1,11 @@
+import "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 import { StatusBar } from "expo-status-bar";
 
-import Navigation from "./Views/Navigation";
+import Navigation from "./Views/navigation/Navigation";
 
 import tasks from "./services/tasks";
 import categories from "./services/categories";

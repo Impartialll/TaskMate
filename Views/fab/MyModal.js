@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
+
 import { Button, Input } from "react-native-elements";
 
 import tasks from "../../services/tasks";
@@ -26,13 +28,13 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
 
   const addHandler = async (name, description, category) => {
     try {
-      const trimmedName = name.trim();
-      const trimmedDescription = description.trim();
-      const trimmedCategory = category.trim();
+      // const trimmedName = name.trim();
+      // const trimmedDescription = description.trim();
+      // const trimmedCategory = category.trim();
       const newData = {
-        name: trimmedName,
-        description: trimmedDescription,
-        category: trimmedCategory,
+        name: name.trim(),
+        description: description.trim(),
+        category: category.trim(),
       };
       await tasks.create(newData);
       updateTasks();
@@ -41,39 +43,55 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
     }
   };
 
+  const [date, setDate] = useState(new Date());
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange,
+      mode: currentMode,
+      is24Hour: true,
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode("date");
+  };
+
+  const showTimepicker = () => {
+    showMode("time");
+  };
+
   return (
     <Modal visible={isVisible} animationType="slide" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalHeaderText}>New task</Text>
-          {/* <TextInput
-            style={styles.textInput}
-            placeholder="Name your task"
-            onChangeText={(text) => setName(text)}
-          />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Description (Optional)"
-            onChangeText={(text) => setDescriptoion(text)}
-          />
-          <TextInput
-            style={styles.textInput}
-            placeholder="Category"
-            onChangeText={(text) => setCategory(text)}
-          /> */}
           <Input
             placeholder="Name your tasks"
+            style={styles.textInput}
             onChangeText={(text) => setName(text)}
           />
           <Input
             placeholder="Description (optional)"
+            style={styles.textInput}
             onChangeText={(text) => setDescriptoion(text)}
           />
-          <Input
+          {/* <Input
             placeholder="Category"
             onChangeText={(text) => setCategory(text)}
-          />
-          <View style={styles.buttonsContainer}>
+          /> */}
+          <View style={styles.dateTimePickerContainer}>
+            <Button onPress={showDatepicker} title="Show date picker!" />
+            <Button onPress={showTimepicker} title="Show time picker!" />
+          </View>
+          <Text>selected: {date.toLocaleString()}</Text>
+          <View style={styles.closeSaveContainer}>
             <Button
               title="Close"
               containerStyle={styles.button}
@@ -83,6 +101,8 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
                 setName("");
                 setDescriptoion("");
                 setCategory("");
+                console.log(date);
+                setDate(new Date());
               }}
               type="clear"
             />
@@ -106,7 +126,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-end",
   },
-  buttonsContainer: {
+  dateTimePickerContainer: {
+    justifyContent: "space-around",
+  },
+  closeSaveContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",

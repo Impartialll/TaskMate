@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ListItem, Avatar, Button, Text } from "react-native-elements";
+import { StyleSheet } from "react-native";
 import tasks from "../../services/tasks";
 
-export default function RenderItem({ item, fetchData }) {
+import { Swipeable, RectButton } from "react-native-gesture-handler";
+
+export default function RenderItem({ item, fetchData, navigation }) {
   const [isSwiped, setIsSwiped] = useState(false);
+
   const delHandler = async (id) => {
     try {
       await tasks.deleteObject(id);
@@ -12,9 +16,16 @@ export default function RenderItem({ item, fetchData }) {
       console.error("Error deletion the task:", error);
     }
   };
+
   return (
     <ListItem.Swipeable
       bottomDivider
+      onLongPress={() => {
+        navigation.navigate("Subtasks", {
+          taskId: item.id,
+          taskName: item.name,
+        });
+      }}
       onSwipe={() => setIsSwiped(true)}
       onSwipeRelease={() => setIsSwiped(false)}
       leftContent={
@@ -41,7 +52,7 @@ export default function RenderItem({ item, fetchData }) {
       }
     >
       <Avatar title={item.name[0]} />
-      <ListItem.Content>
+      <ListItem.Content style={styles.listContentStyle}>
         <ListItem.Title>{item.name}</ListItem.Title>
         <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
       </ListItem.Content>
@@ -49,3 +60,7 @@ export default function RenderItem({ item, fetchData }) {
     </ListItem.Swipeable>
   );
 }
+
+const styles = StyleSheet.create({
+  listContentStyle: {},
+});
