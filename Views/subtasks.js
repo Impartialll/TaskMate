@@ -31,7 +31,7 @@ export default function Subtasks({ fetchData }) {
     useCallback(() => {
       return () => {
         // tasks.update(taskId, inputTaskName);
-        fetchData();
+        // fetchData();
       };
     }, [])
   );

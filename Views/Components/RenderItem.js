@@ -3,13 +3,13 @@ import { ListItem, Avatar, Button, Text } from "@rneui/base";
 import { StyleSheet } from "react-native";
 import tasks from "../../services/tasks";
 
-export default function RenderItem({ item, fetchData, navigation }) {
+export default function RenderItem({ item, fetchTasks, navigation }) {
   const [isSwiped, setIsSwiped] = useState(false);
 
   const delHandler = async (id) => {
     try {
       await tasks.deleteObject(id);
-      fetchData();
+      fetchTasks();
     } catch (error) {
       console.error("Error deletion the task:", error);
     }
@@ -24,8 +24,6 @@ export default function RenderItem({ item, fetchData, navigation }) {
           taskName: item.name,
         });
       }}
-      // onSwipe={() => setIsSwiped(true)}
-      // onSwipeRelease={() => setIsSwiped(false)}
 
       leftContent={(reset) => (
         <Button
@@ -40,20 +38,22 @@ export default function RenderItem({ item, fetchData, navigation }) {
         />
       )
       }
-      rightContent={(reset) => (        <Button
-        title="Delete"
-        onPress={() => {
-          setIsSwiped(false);
-          delHandler(item.id);
-          reset();
-        }}
-        icon={{ name: "delete", color: "white" }}
-        buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
-      />)
+      rightContent={(reset) => (
+        <Button
+          title="Delete"
+          onPress={() => {
+            setIsSwiped(false);
+            delHandler(item.id);
+            reset();
+          }}
+          icon={{ name: "delete", color: "white" }}
+          buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
+        />
+      )
       }
     >
       <Avatar title={item.name[0]} />
-      <ListItem.Content style={styles.listContentStyle}>
+      <ListItem.Content>
         <ListItem.Title>{item.name}</ListItem.Title>
         <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
       </ListItem.Content>
@@ -63,5 +63,7 @@ export default function RenderItem({ item, fetchData, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  listContentStyle: {},
+  itemStyle: {
+    width: "80%",
+  },
 });

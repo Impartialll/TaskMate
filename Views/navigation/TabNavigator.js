@@ -14,22 +14,12 @@ import About from "../about";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 const Tab = createBottomTabNavigator();
 
-import { createDrawerNavigator } from "@react-navigation/drawer";
-const Drawer = createDrawerNavigator();
-
-export default function TabNavigator({ tasks, cats, setCat, fetchData }) {
+export default function TabNavigator() {
   return (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen
         name="Home"
-        children={() => (
-          <Home
-            data={tasks}
-            cats={cats}
-            setCat={setCat}
-            fetchData={fetchData}
-          />
-        )}
+        children={() => (<Home/>)}
         options={{
           tabBarIcon: ({ focused }) => {
             return (
@@ -46,7 +36,7 @@ export default function TabNavigator({ tasks, cats, setCat, fetchData }) {
       />
       <Tab.Screen
         name="Goal"
-        component={Goal}
+        children={() => (<Goal/>)}
         options={{
           tabBarIcon: ({ focused }) => {
             return (

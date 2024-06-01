@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function About() {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
 
   <Text style={styles.textStyle}>About</Text>
     </SafeAreaView>
@@ -15,7 +15,7 @@ export default function About() {
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: "black",
+    flex: 1,
   },
   textStyle: {
     width: "100%",

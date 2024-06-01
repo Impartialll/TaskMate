@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { StyleSheet, FlatList, View } from "react-native";
 import { Header, Button, Tooltip } from "@rneui/base";
 
@@ -6,16 +6,68 @@ import { useNavigation } from "@react-navigation/native";
 
 import HeaderComponent from "./Components/HeaderComponent";
 import RenderItem from "./Components/RenderItem";
-import MyFAB from "./fab/MyFAB";
+import HomeFAB from "./fab/HomeFAB";
 
 import Entypo from "@expo/vector-icons/Entypo";
+
+import tasks from "../services/tasks";
+import categories from "../services/categories";
 
 keyExtractor = (item, index) => index.toString();
 const Separator = () => <View style={styles.itemSeparator} />;
 
-export default function Home({ data, cats, setCat, fetchData }) {
+export default function Home() {
+
+  const [cats, setCats] = useState([]);
+  const [data, setData] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isModalClosed, setIsModalClosed] = useState(false);
+
+  const fetchCats = async () => {
+    try {
+      const response = await categories.getAll();
+      setCats(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const fetchTasks = async () => {
+    try {
+      if (selectedCategory) {
+        if (selectedCategory === "All") {
+          setSelectedCategory(null);
+          return;
+        }
+        const response = await tasks.getByCategory(selectedCategory);
+        setData(response.data);
+      } else {
+        const response = await tasks.getAll();
+        setData(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCats();
+    fetchTasks();
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    if (isModalClosed) {
+      fetchTasks();
+      setIsModalClosed(false); // Reset the flag
+    }
+  }, [isModalClosed]);
+
+  const handleModalClose = () => {
+    setIsModalClosed(true);
+  };
+
   const renderItem = ({ item }) => (
-    <RenderItem item={item} fetchData={fetchData} navigation={navigation} />
+    <RenderItem item={item} fetchTasks={fetchTasks} navigation={navigation} />
   );
 
   const RigthComponent = () => {
@@ -39,7 +91,7 @@ export default function Home({ data, cats, setCat, fetchData }) {
         buttonStyle={styles.buttonStyle}
         containerStyle={styles.buttonContainer}
         titleStyle={styles.titleStyle}
-        onPress={() => setCat("All")}
+        onPress={() => setCats("All")}
       />
     );
   };
@@ -50,7 +102,7 @@ export default function Home({ data, cats, setCat, fetchData }) {
     <View style={styles.container}>
       <Header
         leftComponent={LeftComponent}
-        centerComponent={<HeaderComponent setCat={setCat} categories={cats} />}
+        centerComponent={<HeaderComponent setCats={setCats} categories={cats} />}
         rightComponent={RigthComponent}
         leftContainerStyle={{
           justifyContent: "center",
@@ -74,7 +126,7 @@ export default function Home({ data, cats, setCat, fetchData }) {
         ItemSeparatorComponent={() => <Separator />}
         contentContainerStyle={styles.listStyle}
       />
-      <MyFAB fetchData={fetchData} />
+      <HomeFAB onClose={handleModalClose } />
     </View>
   );
 }
@@ -82,7 +134,6 @@ export default function Home({ data, cats, setCat, fetchData }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // height: "90%",
   },
   listStyle: {
     paddingBottom: "35%",
@@ -97,16 +148,11 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginHorizontal: 8,
     borderRadius: 17,
-    // height: 32,
   },
   buttonStyle: {
     backgroundColor: "#ffb3b3",
-    // borderWidth: 1.5,
-    // borderColor: "white",
-    // borderRadius: 0,
   },
   titleStyle: {
-    // paddingBottom: 5,
     color: "black",
     fontWeight: "800",
     fontSize: 13,

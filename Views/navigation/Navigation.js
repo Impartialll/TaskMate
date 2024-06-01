@@ -6,25 +6,20 @@ import Subtasks from "../subtasks";
 
 const Stack = createNativeStackNavigator();
 
-export default function Navigation({ tasks, cats, setCat, fetchData }) {
+export default function Navigation({ tasks, cats, setCat, fetchTasks, fetchGoals }) {
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
           name="Tabs"
           children={() => (
-            <TabNavigator
-              tasks={tasks}
-              cats={cats}
-              setCat={setCat}
-              fetchData={fetchData}
-            />
+            <TabNavigator/>
           )}
           options={{ headerShown: false }} // Приховати заголовок для вкладок
         />
         <Stack.Screen
           name="Subtasks"
-          children={() => <Subtasks fetchData={fetchData} />}
+          children={() => <Subtasks fetchTasks={fetchTasks} />}
           // options={{ title: "subtasks screen" }} // Додаткові опції, наприклад заголовок
         />
       </Stack.Navigator>

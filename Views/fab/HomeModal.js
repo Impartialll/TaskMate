@@ -1,16 +1,15 @@
+import React, { useState } from "react";
 import {
   View,
-  Text,
   Modal,
   StyleSheet,
-  TextInput,
-  Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import { Button, Input, Text } from "@rneui/base";
 
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
-import { Button, Input } from "@rneui/base";
+import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import tasks from "../../services/tasks";
 
@@ -73,19 +72,15 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
         <View style={styles.modalContent}>
           <Text style={styles.modalHeaderText}>New task</Text>
           <Input
-            placeholder="Name your tasks"
-            style={styles.textInput}
-            onChangeText={(text) => setName(text)}
-          />
+      placeholder="Task name"
+      leftIcon={<MaterialCommunityIcons name="bookmark-box-multiple-outline" size={24} color="black" />}
+      onChangeText={(text) => setName(text)}
+      />
           <Input
-            placeholder="Description (optional)"
-            style={styles.textInput}
-            onChangeText={(text) => setDescriptoion(text)}
-          />
-          {/* <Input
-            placeholder="Category"
-            onChangeText={(text) => setCategory(text)}
-          /> */}
+      placeholder="Description (optional)"
+      leftIcon={<MaterialIcons name="description" size={24} color="black" />}
+      onChangeText={(text) => setDescriptoion(text)}
+      />
           <View style={styles.dateTimePickerContainer}>
             <Button onPress={showDatepicker} title="Show date picker!" />
             <Button onPress={showTimepicker} title="Show time picker!" />
@@ -101,7 +96,6 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
                 setName("");
                 setDescriptoion("");
                 setCategory("");
-                console.log(date);
                 setDate(new Date());
               }}
               type="clear"
@@ -133,8 +127,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    // borderWidth: 1,
-    // borderColor: "black",
   },
   button: {
     marginTop: 5,

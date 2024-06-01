@@ -11,6 +11,18 @@
       "name": "goal",
       "description": "",
       "category": ""
+    },
+    {
+      "id": "a409",
+      "name": "test       task",
+      "description": "gogogogog",
+      "category": ""
+    },
+    {
+      "id": "a0b1",
+      "name": "test task",
+      "description": "test fetching",
+      "category": ""
     }
   ],
   "categories": [
@@ -29,6 +41,18 @@
     {
       "id": "01cb",
       "name": "иртипнр"
+    }
+  ],
+  "goals": [
+    {
+      "id": "8618",
+      "name": "my first goal",
+      "description": "blvlvlv"
+    },
+    {
+      "id": "8a02",
+      "name": "my second goal",
+      "description": "it is a fetch test"
     }
   ]
 }
