@@ -35,10 +35,6 @@ export default function MyFAB({ onClose }) {
 
 const styles = StyleSheet.create({
   container: {
-    // position: "absolute",
     bottom: 55,
   },
-  // fabStyle: {
-  //   bottom: 60,
-  // },
 });

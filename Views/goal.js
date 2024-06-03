@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView, Image } from "react-native";
 
-import { Text, Card, Button, Icon } from "@rneui/base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import GoalFAB from "./fab/GoalFAB";
 
-import goals from "../services/goals"
+import goals from "../services/goals";
+
+import MyCard from "./Components/Card";
   
 export default function Goal() {
   const [data, setData] = useState([]);
@@ -27,7 +28,7 @@ export default function Goal() {
   useEffect(() => {
     if (isModalClosed) {
       fetchGoals();
-      setIsModalClosed(false); // Reset the flag
+      setIsModalClosed(false);
     }
   }, [isModalClosed]);
 
@@ -38,23 +39,7 @@ export default function Goal() {
   return (
     <SafeAreaView style={styles.container}>
     <ScrollView>
-      <View style={styles.subContainer}>
-      {data.map((goal) => {
-            return (
-              <Card key={goal.id}>
-                <Card.Title>{goal.name}</Card.Title>
-                <Card.Divider />
-                <View style={styles.user}>
-                  <Image
-                    style={styles.image}
-                    resizeMode="cover"
-                  />
-                  <Text style={styles.name}>{goal.description}</Text>
-                </View>
-              </Card>
-            );
-          })}
-      </View>
+      <MyCard data={data} />
     </ScrollView>
     <GoalFAB onClose={handleModalClose} />
     </SafeAreaView>
@@ -66,9 +51,6 @@ export default function Goal() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  subContainer:{
-    paddingBottom: "35%",
   },
   fonts: {
     marginBottom: 8,
