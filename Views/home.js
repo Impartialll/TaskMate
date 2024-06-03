@@ -58,14 +58,15 @@ export default function Home() {
   useEffect(() => {
     if (isModalClosed) {
       fetchTasks();
-      setIsModalClosed(false); // Reset the flag
+      setIsModalClosed(false);
     }
   }, [isModalClosed]);
 
   const handleModalClose = () => {
     setIsModalClosed(true);
   };
-
+  
+  const navigation = useNavigation();
   const renderItem = ({ item }) => (
     <RenderItem item={item} fetchTasks={fetchTasks} navigation={navigation} />
   );
@@ -95,8 +96,6 @@ export default function Home() {
       />
     );
   };
-
-  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>

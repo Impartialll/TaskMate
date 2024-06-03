@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, ScrollView, Image } from "react-native";
-
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
+
 import GoalFAB from "./fab/GoalFAB";
+import MyCard from "./Components/Card";
 
 import goals from "../services/goals";
-
-import MyCard from "./Components/Card";
   
 export default function Goal() {
   const [data, setData] = useState([]);
@@ -36,10 +36,11 @@ export default function Goal() {
     setIsModalClosed(true);
   };
 
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
     <ScrollView>
-      <MyCard data={data} />
+      <MyCard data={data} navigation={navigation} />
     </ScrollView>
     <GoalFAB onClose={handleModalClose} />
     </SafeAreaView>

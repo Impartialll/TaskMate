@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text, Card, Button, Icon } from "@rneui/base";
-
+import { StyleSheet, View, Pressable } from 'react-native';
+import { Text, Card, Button } from "@rneui/base";
 import { ProgressBar, MD3Colors } from 'react-native-paper';
+import { Feather } from '@expo/vector-icons';
 
 const MyProgress = () => (
     <ProgressBar
@@ -12,25 +12,41 @@ const MyProgress = () => (
     />
   );
 
-export default function MyCard({ data }) {
+export default function MyCard({ data, navigation }) {
   return (
     <View style={styles.container}>
     {data.map((goal) => {
             return (
+              <Pressable onLongPress={() => {
+                navigation.navigate("Goal Subtasks", {
+                  goalName: goal.name,
+                  goalId: goal.id,
+                });
+              }}>
           <Card key={goal.id} containerStyle={styles.card}>
             <View style={styles.containerTitle}>
               <View style={styles.titleLeft}>
-                <Text h4>{goal.name}</Text>
+                <Text h4 style={styles.textName} >{goal.name}</Text>
               </View>
               <View style={styles.titleRight}>
                 <MyProgress/>
               </View>
             </View>
             <Card.Divider />
-            <View style={styles.description}>
-              <Text style={styles.name}>{goal.description}</Text>
+            <View style={styles.containerUnder}>
+              <View style={styles.description}>
+                <Text style={styles.name}>{goal.description}</Text>
+              </View>
+              <View style={styles.underRight}>
+                <View style={styles.date}>
+                  <Feather name="clock" size={32} color="black" styles={styles.dateIcon} />
+                  <Text style={styles.dateText}>26.09.2023</Text>
+                </View>
+                <Text style={{fontWeight: "bold", padding: 10}}>Днів залишилося: 32</Text>
             </View>
+              </View>
           </Card>
+              </Pressable>
         );
     })}
     </View>
@@ -39,40 +55,82 @@ export default function MyCard({ data }) {
 
 const styles = StyleSheet.create({
     container:{
-        paddingBottom: "35%",
-      },
+      paddingBottom: "35%",
+      paddingHorizontal: 10, // Added padding for the entire container to manage spacing
+    },
     card: {
-        borderRadius: 20,
-      },
+      borderRadius: 20,
+      padding: 0, // Remove padding inside the card to ensure full-width top part
+      overflow: 'hidden', // Ensure children are clipped to the card's rounded corners
+    },
+    containerTitle: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+
+      borderWidth: 2,
+      borderBottomWidth: 0,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      backgroundColor: "green",
+
+      paddingVertical: 10,
+    },
+    containerUnder: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+
+      marginVertical: 10,
+
+      paddingBottom: 10,
+    },
+    underRight: {
+    },
+    progressBar: {
+      borderWidth: 2,
+      borderRadius: 15,
+      borderColor: "black",
+      height: 25,
+      width: '100%',
+    },
     name: {
       fontSize: 16,
       marginVertical: 5,
     },
-    description: {
-        marginVertical: 5,
-        marginHorizontal: 10,
+    textName: {
+      color: "#fff",
     },
-    containerTitle: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-
-        marginVertical: 20,
-      },
     titleLeft: {
-        flex: 1,
-        marginHorizontal: 10,
-        alignItems: "flex-start",
+      flex: 1,
+      marginHorizontal: 10,
+      alignItems: "center",
     },
     titleRight: {
-        flex: 1,
-        // alignItems: "center",
+      flex: 1,
+      marginHorizontal: 10,
+      // alignItems: "flex-start",
     },
-    progressBar: {
-      borderWidth: 1,
-      borderRadius: 10,
-      borderColor: "black",
-      height: 20,
-      width: '100%',
+    description: {
+      flex: 1,
+      alignItems: "flex-start",
+      marginHorizontal: 10,
+      marginLeft: 20,
+
+      // borderWidth: 2,
     },
+    date: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      marginRight: 10,
+    },
+    dateText: {
+      fontWeight: "bold",
+      marginHorizontal: 10,
+    },
+    dateIcon: {
+      marginHorizontal: 10,
+    }
 });

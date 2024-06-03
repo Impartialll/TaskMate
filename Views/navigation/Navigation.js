@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigator from "./TabNavigator";
 import Subtasks from "../subtasks";
+import GoalSubtasks from "../goalSubtasks";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,12 +16,16 @@ export default function Navigation({ tasks, cats, setCat, fetchTasks, fetchGoals
           children={() => (
             <TabNavigator/>
           )}
-          options={{ headerShown: false }} // Приховати заголовок для вкладок
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Subtasks"
           children={() => <Subtasks fetchTasks={fetchTasks} />}
-          // options={{ title: "subtasks screen" }} // Додаткові опції, наприклад заголовок
+        />
+        <Stack.Screen
+          name="Goal Subtasks"
+
+          children={() => <GoalSubtasks />}
         />
       </Stack.Navigator>
     </NavigationContainer>
