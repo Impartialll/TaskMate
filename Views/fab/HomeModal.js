@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Modal,
@@ -8,12 +8,12 @@ import { Button, Input, Text } from "@rneui/base";
 
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
-import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import tasks from "../../services/tasks";
 
-export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
+export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate }) {
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
   const [inputCategory, setCategory] = useState("");
@@ -27,9 +27,6 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
 
   const addHandler = async (name, description, category) => {
     try {
-      // const trimmedName = name.trim();
-      // const trimmedDescription = description.trim();
-      // const trimmedCategory = category.trim();
       const newData = {
         name: name.trim(),
         description: description.trim(),
@@ -42,7 +39,13 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
     }
   };
 
-  const [date, setDate] = useState(new Date());
+  // const [date, setDate] = useState(new Date());
+
+  useEffect(() => {
+    if (isVisible) {
+      setDate(new Date());
+    }
+  }, [isVisible]);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -66,21 +69,31 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
     showMode("time");
   };
 
+  const onCloseModal = () => {
+    toggleOverlay();
+    setName("");
+    setDescriptoion("");
+    setCategory("");
+    setDate(new Date());
+  };
+
   return (
     <Modal visible={isVisible} animationType="slide" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalHeaderText}>New task</Text>
+          <Text style={styles.modalHeaderText}>Нове завдання</Text>
           <Input
-      placeholder="Task name"
-      leftIcon={<MaterialCommunityIcons name="bookmark-box-multiple-outline" size={24} color="black" />}
-      onChangeText={(text) => setName(text)}
-      />
+            inputStyle={{fontSize: 16}}
+            placeholder="Назва завдання"
+            leftIcon={<FontAwesome5 name="running" size={24} color="black" />}
+            onChangeText={(text) => setName(text)}
+          />
           <Input
-      placeholder="Description (optional)"
-      leftIcon={<MaterialIcons name="description" size={24} color="black" />}
-      onChangeText={(text) => setDescriptoion(text)}
-      />
+            inputStyle={{fontSize: 16}}
+            placeholder="Опис (за бажанням)"
+            leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" />}
+            onChangeText={(text) => setDescriptoion(text)}
+          />
           <View style={styles.dateTimePickerContainer}>
             <Button onPress={showDatepicker} title="Show date picker!" />
             <Button onPress={showTimepicker} title="Show time picker!" />
@@ -88,24 +101,22 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks }) {
           <Text>selected: {date.toLocaleString()}</Text>
           <View style={styles.closeSaveContainer}>
             <Button
-              title="Close"
+              title="Скасувати"
+              titleStyle={{fontSize: 16}}
+              size="sm"
               containerStyle={styles.button}
-              // style={styles.button}
-              onPress={() => {
-                toggleOverlay();
-                setName("");
-                setDescriptoion("");
-                setCategory("");
-                setDate(new Date());
-              }}
-              type="clear"
-            />
+              buttonStyle={{borderWidth: 1, borderRadius: 4}}
+              onPress={onCloseModal}
+              type="outline"
+              />
             <Button
-              title="Save"
+              title="Зберегти"
+              titleStyle={{fontSize: 16}}
+              size="sm"
+              color="secondary"
               containerStyle={styles.button}
-              // style={styles.button}
               onPress={handleSave}
-              type="clear"
+              type="solid"
             />
           </View>
         </View>
@@ -125,12 +136,14 @@ const styles = StyleSheet.create({
   },
   closeSaveContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
     alignItems: "center",
+    paddingTop: 10,
   },
   button: {
-    marginTop: 5,
-    marginHorizontal: "20%",
+    flex: 1,
+    marginHorizontal: 10,
+    borderRadius: 4,
   },
   buttonText: {
     color: "white",
@@ -154,13 +167,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     marginTop: 5,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
-    padding: 8,
-    marginBottom: 10,
-    width: "100%",
   },
 });

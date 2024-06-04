@@ -13,6 +13,7 @@ const MyProgress = () => (
   );
 
 export default function MyCard({ data, navigation }) {
+  const colours = ["#32B232", "red", "orange"]
   return (
     <View style={styles.container}>
     {data.map((goal) => {
@@ -26,7 +27,7 @@ export default function MyCard({ data, navigation }) {
                 });
               }}>
           <Card containerStyle={styles.card}>
-            <View style={styles.containerTitle}>
+            <View style={[styles.containerTitle, {backgroundColor: goal.id[0] == "0" ? colours[2] : colours[0]}]}>
               <View style={styles.titleLeft}>
                 <Text h4 style={styles.textName} >{goal.name}</Text>
               </View>
@@ -59,12 +60,12 @@ export default function MyCard({ data, navigation }) {
 const styles = StyleSheet.create({
     container:{
       paddingBottom: "35%",
-      paddingHorizontal: 10, // Added padding for the entire container to manage spacing
+      paddingHorizontal: 10,
     },
     card: {
       borderRadius: 20,
-      padding: 0, // Remove padding inside the card to ensure full-width top part
-      overflow: 'hidden', // Ensure children are clipped to the card's rounded corners
+      padding: 0,
+      overflow: 'hidden',
     },
     containerTitle: {
       flexDirection: 'row',
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
     },
     progressBar: {
       borderWidth: 2,
-      borderRadius: 15,
+      borderRadius: 10,
       borderColor: "black",
       height: 25,
       width: '100%',
@@ -112,15 +113,12 @@ const styles = StyleSheet.create({
     titleRight: {
       flex: 1,
       marginHorizontal: 10,
-      // alignItems: "flex-start",
     },
     description: {
       flex: 1,
       alignItems: "flex-start",
       marginHorizontal: 10,
       marginLeft: 20,
-
-      // borderWidth: 2,
     },
     date: {
       flex: 1,

@@ -11,9 +11,7 @@ import MyMenu from "./Components/Menu";
 
 import tasks from "../services/tasks";
 import categories from "../services/categories";
-import { PaperProvider } from "react-native-paper";
 
-keyExtractor = (item, index) => index.toString();
 const Separator = () => <View style={styles.itemSeparator} />;
 
 export default function Home() {
@@ -22,6 +20,7 @@ export default function Home() {
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isModalClosed, setIsModalClosed] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   const fetchCats = async () => {
     try {
@@ -112,12 +111,12 @@ export default function Home() {
       />
       <FlatList
         data={data}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
         ItemSeparatorComponent={() => <Separator />}
         contentContainerStyle={styles.listStyle}
       />
-      <HomeFAB onClose={handleModalClose } />
+      <HomeFAB onClose={handleModalClose} date={date} setDate={setDate} />
     </View>
   );
 }
