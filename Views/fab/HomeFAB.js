@@ -26,7 +26,7 @@ export default function MyFAB({ onClose }) {
         style={styles.fabStyle}
         onPress={toggleOverlay}
         icon={() => {
-          return <AntDesign name="plus" size={24} color="white" />;
+          return <AntDesign name="plus" size={24} color="#fff" />;
         }}
       />
     </View>

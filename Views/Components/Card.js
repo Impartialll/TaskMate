@@ -16,14 +16,16 @@ export default function MyCard({ data, navigation }) {
   return (
     <View style={styles.container}>
     {data.map((goal) => {
-            return (
-              <Pressable onLongPress={() => {
+      return (
+        <Pressable
+              key={goal.id}
+              onLongPress={() => {
                 navigation.navigate("Goal Subtasks", {
                   goalName: goal.name,
                   goalId: goal.id,
                 });
               }}>
-          <Card key={goal.id} containerStyle={styles.card}>
+          <Card containerStyle={styles.card}>
             <View style={styles.containerTitle}>
               <View style={styles.titleLeft}>
                 <Text h4 style={styles.textName} >{goal.name}</Text>
@@ -35,6 +37,7 @@ export default function MyCard({ data, navigation }) {
             <Card.Divider />
             <View style={styles.containerUnder}>
               <View style={styles.description}>
+                <Text>TRY THE LONGPRESS</Text>
                 <Text style={styles.name}>{goal.description}</Text>
               </View>
               <View style={styles.underRight}>
@@ -46,10 +49,10 @@ export default function MyCard({ data, navigation }) {
             </View>
               </View>
           </Card>
-              </Pressable>
+        </Pressable>
         );
-    })}
-    </View>
+      })}
+      </View>
   )
 };
 

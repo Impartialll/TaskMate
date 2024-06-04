@@ -4,14 +4,14 @@ import { Header, Button, Tooltip } from "@rneui/base";
 
 import { useNavigation } from "@react-navigation/native";
 
-import HeaderComponent from "./Components/HeaderComponent";
+import HeaderComponent from "./Components/Header";
 import RenderItem from "./Components/RenderItem";
 import HomeFAB from "./fab/HomeFAB";
-
-import Entypo from "@expo/vector-icons/Entypo";
+import MyMenu from "./Components/Menu";
 
 import tasks from "../services/tasks";
 import categories from "../services/categories";
+import { PaperProvider } from "react-native-paper";
 
 keyExtractor = (item, index) => index.toString();
 const Separator = () => <View style={styles.itemSeparator} />;
@@ -73,15 +73,7 @@ export default function Home() {
 
   const RigthComponent = () => {
     return (
-      <Tooltip popover={<Button></Button>}>
-        <Button
-          icon={<Entypo name="dots-three-vertical" size={14} color="black" />}
-          type="clear"
-          buttonStyle={{}}
-          containerStyle={{}}
-          onPress={() => console.log(true)}
-        />
-      </Tooltip>
+        <MyMenu />
     );
   };
 
@@ -92,7 +84,7 @@ export default function Home() {
         buttonStyle={styles.buttonStyle}
         containerStyle={styles.buttonContainer}
         titleStyle={styles.titleStyle}
-        onPress={() => setCats("All")}
+        onPress={() => setSelectedCategory("All")}
       />
     );
   };
@@ -101,7 +93,7 @@ export default function Home() {
     <View style={styles.container}>
       <Header
         leftComponent={LeftComponent}
-        centerComponent={<HeaderComponent setCats={setCats} categories={cats} />}
+        centerComponent={<HeaderComponent setCat={setSelectedCategory} categories={cats} />}
         rightComponent={RigthComponent}
         leftContainerStyle={{
           justifyContent: "center",

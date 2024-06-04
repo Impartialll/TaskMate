@@ -36,6 +36,15 @@ export default function Subtasks({ fetchData }) {
     }, [])
   );
 
+  const left = () => {
+    return (
+      <Button
+      icon={<AntDesign name="arrowleft" size={24} color="black" />}
+      onPress={() => navigation.goBack()}
+      />
+    );
+  };
+
   const center = () => {
     return (
       <View style={styles.containerTaskNameStyle}>
@@ -46,23 +55,24 @@ export default function Subtasks({ fetchData }) {
     );
   };
 
+const right = () => {
+  return (
+    <Button
+    icon={<FontAwesome6 name="check-double" size={24} color="#fff" />}
+    // buttonStyle={{}}
+    containerStyle={{ borderRadius: 30 }}
+    // onPress={}
+  />
+  );
+};
+
   return (
     <View style={{ flex: 1 }}>
       <Header
-        leftComponent={{
-          icon: "arrow-back",
-          color: "#fff",
-          onPress: () => navigation.goBack(),
-        }}
+        leftComponent={left}
         centerComponent={center}
-        rightComponent={
-          <Button
-            icon={<FontAwesome6 name="check-double" size={24} color="#fff" />}
-            // buttonStyle={{}}
-            containerStyle={{ borderRadius: 30 }}
-            // onPress={}
-          />
-        }
+        rightComponent={right}
+        style={{borderTopWidth: 1, borderBottomWidth: 1}}
         leftContainerStyle={styles.headerContainerStyle}
         centerContainerStyle={styles.headerContainerStyle}
         rightContainerStyle={styles.headerContainerStyle}
