@@ -12,6 +12,8 @@ import MyMenu from "./Components/Menu";
 import tasks from "../services/tasks";
 import categories from "../services/categories";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const Separator = () => <View style={styles.itemSeparator} />;
 
 export default function Home() {
@@ -31,23 +33,41 @@ export default function Home() {
     }
   };
 
+  // const fetchTasks = async () => {
+  //   try {
+  //     let response;
+  //     if (selectedCategory) {
+  //       if (selectedCategory === "All") {
+  //         setSelectedCategory(null);
+  //         return;
+  //       }
+  //       response = await tasks.getByCategory(selectedCategory);
+  //       setData(response.data);
+  //     } else {
+  //       response = await tasks.getAll();
+  //       setData(response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //   }
+  // };
+
   const fetchTasks = async () => {
     try {
-      if (selectedCategory) {
-        if (selectedCategory === "All") {
-          setSelectedCategory(null);
-          return;
-        }
-        const response = await tasks.getByCategory(selectedCategory);
-        setData(response.data);
+      const localData = await AsyncStorage.getItem('tasks');
+      if (localData !== null) {
+        setData(JSON.parse(localData));
       } else {
-        const response = await tasks.getAll();
-        setData(response.data);
+        console.log('No tasks found in local storage.');
+        setData([]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+      setData([]); // При помилці встановіть порожній масив
     }
   };
+  
+  
 
   useEffect(() => {
     fetchCats();
@@ -60,6 +80,11 @@ export default function Home() {
       setIsModalClosed(false);
     }
   }, [isModalClosed]);
+
+  useEffect(() => {
+    fetchCats();
+    fetchTasks();
+  }, [data, cats]);
 
   const handleModalClose = () => {
     setIsModalClosed(true);

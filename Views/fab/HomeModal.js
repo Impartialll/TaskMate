@@ -12,11 +12,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import tasks from "../../services/tasks";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate }) {
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
-  const [inputCategory, setCategory] = useState("");
   const [formattedDate, setFormattedDate] = useState(date.getHours());
   const [formattedTime, setFormattedTime] = useState(date.getHours());
 
@@ -67,25 +67,40 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
     toggleOverlay();
     setName("");
     setDescriptoion("");
-    setCategory("");
   };
 
   const handleSave = () => {
     if (inputName != "") {
-      addHandler(inputName, inputDescription, inputCategory);
+      addHandler(inputName, inputDescription);
     }
     toggleOverlay();
   };
 
-  const addHandler = async (name, description, category) => {
+  // const addHandler = async (name, description) => {
+  //   try {
+  //     const newData = {
+  //       name: name.trim(),
+  //       description: description.trim(),
+  //       category: "none",
+  //     };
+  //     await tasks.create(newData);
+  //   } catch (error) {
+  //     console.error("Error adding the task:", error);
+  //   }
+  // };
+
+  const addHandler = async (name, description) => {
     try {
       const newData = {
         name: name.trim(),
         description: description.trim(),
-        category: category.trim(),
+        category: "none",
       };
-      await tasks.create(newData);
-      updateTasks();
+      // Оновлення локальних даних у AsyncStorage
+      const existingTasks = await AsyncStorage.getItem('tasks');
+      const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+      tasksArray.push(newData);
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
     } catch (error) {
       console.error("Error adding the task:", error);
     }
