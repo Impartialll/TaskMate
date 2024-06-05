@@ -13,7 +13,7 @@ const MyProgress = () => (
   );
 
 export default function MyCard({ data, navigation }) {
-  const colours = ["#32B232", "red", "orange"]
+  const colours = ["#3CBC3C", "red", "#D77D00"]
   return (
     <View style={styles.container}>
     {data.map((goal) => {
@@ -27,7 +27,7 @@ export default function MyCard({ data, navigation }) {
                 });
               }}>
           <Card containerStyle={styles.card}>
-            <View style={[styles.containerTitle, {backgroundColor: goal.id[0] == "0" ? colours[2] : colours[0]}]}>
+            <View style={[styles.containerTitle, {backgroundColor: goal.id[0] == "0" ? colours[1] : colours[2]}]}>
               <View style={styles.titleLeft}>
                 <Text h4 style={styles.textName} >{goal.name}</Text>
               </View>

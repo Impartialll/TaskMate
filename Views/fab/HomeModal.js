@@ -17,39 +17,33 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
   const [inputCategory, setCategory] = useState("");
+  const [formattedDate, setFormattedDate] = useState(date.getHours());
+  const [formattedTime, setFormattedTime] = useState(date.getHours());
 
-  const handleSave = () => {
-    if (inputName != "") {
-      addHandler(inputName, inputDescription, inputCategory);
+  const roundToNearestTenMinutes = (date) => {
+    const minutes = date.getMinutes();
+    const roundedMinutes = Math.ceil(minutes / 10) * 10;
+    if (roundedMinutes === 60) {
+      date.setHours(date.getHours() + 1);
+      date.setMinutes(0);
+    } else {
+      date.setMinutes(roundedMinutes);
     }
-    toggleOverlay();
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    return date;
   };
 
-  const addHandler = async (name, description, category) => {
-    try {
-      const newData = {
-        name: name.trim(),
-        description: description.trim(),
-        category: category.trim(),
-      };
-      await tasks.create(newData);
-      updateTasks();
-    } catch (error) {
-      console.error("Error adding the task:", error);
-    }
+  const getFormattedDate = (date) => {
+    const daysOfWeek = ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота"];
+    const months = ["січ.", "лют.", "берез.", "квіт.", "трав.", "черв.", "лип.", "серп.", "верес.", "жовт.", "лист.", "груд."];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const month = months[date.getMonth()];
+    return `${dayOfWeek}, ${date.getDate()} ${month}`;
   };
-
-  // const [date, setDate] = useState(new Date());
-
-  useEffect(() => {
-    if (isVisible) {
-      setDate(new Date());
-    }
-  }, [isVisible]);
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
+    setDate(selectedDate);
   };
 
   const showMode = (currentMode) => {
@@ -74,31 +68,75 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
     setName("");
     setDescriptoion("");
     setCategory("");
-    setDate(new Date());
   };
+
+  const handleSave = () => {
+    if (inputName != "") {
+      addHandler(inputName, inputDescription, inputCategory);
+    }
+    toggleOverlay();
+  };
+
+  const addHandler = async (name, description, category) => {
+    try {
+      const newData = {
+        name: name.trim(),
+        description: description.trim(),
+        category: category.trim(),
+      };
+      await tasks.create(newData);
+      updateTasks();
+    } catch (error) {
+      console.error("Error adding the task:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isVisible) {
+      setDate(roundToNearestTenMinutes(new Date()));
+    }
+  }, [isVisible]);
+
+  useEffect(() => {
+    const days = getFormattedDate(date);
+    const time = date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+    setFormattedDate(days);
+    setFormattedTime(time);
+  }, [date]);
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <Text style={styles.modalHeaderText}>Нове завдання</Text>
-          <Input
-            inputStyle={{fontSize: 16}}
-            placeholder="Назва завдання"
-            leftIcon={<FontAwesome5 name="running" size={24} color="black" />}
-            onChangeText={(text) => setName(text)}
-          />
-          <Input
-            inputStyle={{fontSize: 16}}
-            placeholder="Опис (за бажанням)"
-            leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" />}
-            onChangeText={(text) => setDescriptoion(text)}
-          />
+            <Input
+              inputStyle={{fontSize: 16}}
+              placeholder="Назва завдання"
+              leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
+              onChangeText={(text) => setName(text)}
+            />
+            <Input
+              inputStyle={{fontSize: 16}}
+              placeholder="Опис (не обов'язково)"
+              leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" style={{padding: 3}} />}
+              onChangeText={(text) => setDescriptoion(text)}
+            />
           <View style={styles.dateTimePickerContainer}>
-            <Button onPress={showDatepicker} title="Show date picker!" />
-            <Button onPress={showTimepicker} title="Show time picker!" />
+            <Button 
+              containerStyle={{flex: 1, padding: 10}}
+              buttonStyle={{paddingHorizontal: 0,}}
+              title={formattedDate}
+              onPress={showDatepicker}
+              type="clear"
+            />
+            <Button 
+              containerStyle={{flex: 1, padding: 10}}
+              title={formattedTime}
+              onPress={showTimepicker}
+              type="clear"
+            />
           </View>
-          <Text>selected: {date.toLocaleString()}</Text>
+          {/* <Button title="press me" onPress={() => console.log(date.toLocaleString())} /> */}
           <View style={styles.closeSaveContainer}>
             <Button
               title="Скасувати"
@@ -132,6 +170,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   dateTimePickerContainer: {
+    flexDirection: "row",
     justifyContent: "space-around",
   },
   closeSaveContainer: {

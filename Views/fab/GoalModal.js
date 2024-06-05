@@ -41,31 +41,37 @@ export default function GoalModal({ isVisible, toggleOverlay }) {
     <Modal visible={isVisible} animationType="slide" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalHeaderText}>New goal</Text>
+          <Text style={styles.modalHeaderText}>Нова ціль</Text>
           <Input
-      placeholder="Goal name"
-      leftIcon={<FontAwesome5 name="running" size={24} color="black" />}
-      onChangeText={(text) => setName(text)}
-      />
+            placeholder="Назва цілі"
+            leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
+            onChangeText={(text) => setName(text)}
+            inputStyle={{fontSize: 16}}
+          />
           <Input
-      placeholder="Description"
-      leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" />}
-      onChangeText={(text) => setDescriptoion(text)}
-      />
+            placeholder="Опис"
+            leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" style={{padding: 5}} />}
+            onChangeText={(text) => setDescriptoion(text)}
+            inputStyle={{fontSize: 16}}
+          />
           <View style={styles.closeSaveContainer}>
             <Button
-              title="Close"
+              title="Скасувати"
+              titleStyle={{fontSize: 16}}
+              size="sm"
               containerStyle={styles.button}
-              // style={styles.button}
+              buttonStyle={{borderWidth: 1, borderRadius: 4}}
               onPress={toggleOverlay}
-              type="clear"
+              type="outline"
             />
             <Button
-              title="Save"
+              title="Зберегти"
+              titleStyle={{fontSize: 16}}
+              size="sm"
+              color="secondary"
               containerStyle={styles.button}
-              // style={styles.button}
               onPress={handleSave}
-              type="clear"
+              type="solid"
             />
           </View>
         </View>
@@ -89,8 +95,9 @@ const styles = StyleSheet.create({
       alignItems: "center",
     },
     button: {
-      marginTop: 5,
-      marginHorizontal: "20%",
+      flex: 1,
+      marginHorizontal: 10,
+      borderRadius: 4,
     },
     buttonText: {
       color: "white",
