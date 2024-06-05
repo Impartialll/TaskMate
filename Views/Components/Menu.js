@@ -14,6 +14,7 @@ export default function MyMenu() {
   return (
       <View
         style={{
+          flex: 1,
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: "center"
@@ -30,8 +31,9 @@ export default function MyMenu() {
             onPress={openMenu}
           />
           }>
-          <Menu.Item onPress={() => {}} title="Item 1" />
-          <Menu.Item onPress={() => {}} title="Item 2" />
+          <Menu.Item leadingIcon="run" onPress={() => {}} title="Всі категорії" />
+          <Divider />
+          <Menu.Item leadingIcon="plus" onPress={() => {}} title="Створити категорію" />
           <Divider />
           <Menu.Item onPress={() => {}} title="Item 3" />
         </Menu>

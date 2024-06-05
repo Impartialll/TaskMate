@@ -12,7 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import tasks from "../../services/tasks";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate }) {
   const [inputName, setName] = useState("");
@@ -76,19 +76,6 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
     toggleOverlay();
   };
 
-  const addHandler = async (name, description) => {
-    try {
-      const newData = {
-        name: name.trim(),
-        description: description.trim(),
-        category: "none",
-      };
-      await tasks.create(newData);
-    } catch (error) {
-      console.error("Error adding the task:", error);
-    }
-  };
-
   // const addHandler = async (name, description) => {
   //   try {
   //     const newData = {
@@ -96,15 +83,29 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
   //       description: description.trim(),
   //       category: "none",
   //     };
-  //     // Оновлення локальних даних у AsyncStorage
-  //     const existingTasks = await AsyncStorage.getItem('tasks');
-  //     const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
-  //     tasksArray.push(newData);
-  //     await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+  //     await tasks.create(newData);
   //   } catch (error) {
   //     console.error("Error adding the task:", error);
   //   }
   // };
+
+  const addHandler = async (name, description) => {
+    try {
+      const newData = {
+        name: name.trim(),
+        description: description.trim(),
+        category: "none",
+      };
+      // Оновлення локальних даних у AsyncStorage
+      const existingTasks = await AsyncStorage.getItem('tasks');
+      const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+      tasksArray.push(newData);
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+      updateTasks();
+    } catch (error) {
+      console.error("Error adding the task:", error);
+    }
+  };
 
   useEffect(() => {
     if (isVisible) {

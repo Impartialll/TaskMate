@@ -5,6 +5,7 @@ import { FAB, Overlay } from "@rneui/base";
 import { AntDesign } from "@expo/vector-icons";
 
 import GoalModal from "./GoalModal";
+import MyModal from "./HomeModal";
 
 export default function GoalFAB( {onClose} ) {
     const [visible, setVisible] = useState(false);
@@ -19,6 +20,10 @@ export default function GoalFAB( {onClose} ) {
         isVisible={visible}
         toggleOverlay={toggleOverlay}
       />
+      {/* <MyModal
+        isVisible={visible}
+        toggleOverlay={toggleOverlay}
+      /> */}
       <FAB
         placement="right"
         style={styles.fabStyle}

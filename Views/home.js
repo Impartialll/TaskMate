@@ -12,7 +12,7 @@ import MyMenu from "./Components/Menu";
 import tasks from "../services/tasks";
 import categories from "../services/categories";
 
-// import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Separator = () => <View style={styles.itemSeparator} />;
 
@@ -33,38 +33,38 @@ export default function Home() {
     }
   };
 
-  const fetchTasks = async () => {
-    try {
-      if (selectedCategory) {
-        if (selectedCategory === "All") {
-          setSelectedCategory(null);
-          return;
-        }
-        const response = await tasks.getByCategory(selectedCategory);
-        setData(response.data);
-      } else {
-        const response = await tasks.getAll();
-        setData(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   // const fetchTasks = async () => {
   //   try {
-  //     const localData = await AsyncStorage.getItem('tasks');
-  //     if (localData !== null) {
-  //       setData(JSON.parse(localData));
+  //     if (selectedCategory) {
+  //       if (selectedCategory === "All") {
+  //         setSelectedCategory(null);
+  //         return;
+  //       }
+  //       const response = await tasks.getByCategory(selectedCategory);
+  //       setData(response.data);
   //     } else {
-  //       console.log('No tasks found in local storage.');
-  //       setData([]);
+  //       const response = await tasks.getAll();
+  //       setData(response.data);
   //     }
   //   } catch (error) {
   //     console.error("Error fetching data:", error);
-  //     setData([]); // При помилці встановіть порожній масив
   //   }
   // };
+
+  const fetchTasks = async () => {
+    try {
+      const localData = await AsyncStorage.getItem('tasks');
+      if (localData !== null) {
+        setData(JSON.parse(localData));
+      } else {
+        console.log('No tasks found in local storage.');
+        setData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setData([]); // При помилці встановіть порожній масив
+    }
+  };
   
   
 
@@ -80,11 +80,6 @@ export default function Home() {
     }
   }, [isModalClosed]);
 
-  // useEffect(() => {
-  //   fetchCats();
-  //   fetchTasks();
-  // }, [data, cats]);
-
   const handleModalClose = () => {
     setIsModalClosed(true);
   };
@@ -96,7 +91,7 @@ export default function Home() {
 
   const RigthComponent = () => {
     return (
-        <MyMenu />
+      <MyMenu />
     );
   };
 
@@ -140,7 +135,7 @@ export default function Home() {
         ItemSeparatorComponent={() => <Separator />}
         contentContainerStyle={styles.listStyle}
       />
-      <HomeFAB onClose={handleModalClose} date={date} setDate={setDate} />
+      <HomeFAB onClose={handleModalClose} updateTasks={fetchTasks} date={date} setDate={setDate} />
     </View>
   );
 }
