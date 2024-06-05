@@ -6,14 +6,14 @@ import { StyleSheet, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 
 import Navigation from "./Views/navigation/Navigation";
-import { PaperProvider } from "react-native-paper";
+// import { PaperProvider } from "react-native-paper";
 
 export default function App() {
   return (
-    <PaperProvider style={styles.container}>
+    <SafeAreaProvider style={styles.container}>
       <Navigation/>
       <StatusBar style="auto" />
-    </PaperProvider>
+    </SafeAreaProvider>
   );
 }
 
