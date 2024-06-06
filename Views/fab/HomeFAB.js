@@ -6,7 +6,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import HomeModal from "./HomeModal";
 
-export default function MyFAB({ onClose, updateTasks, date, setDate }) {
+export default function MyFAB({ onClose, updateTasks, date, setDate, title_state, placeholder_state }) {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
@@ -22,6 +22,8 @@ export default function MyFAB({ onClose, updateTasks, date, setDate }) {
         updateTasks={updateTasks}
         date={date}
         setDate={setDate}
+        title_state={title_state}
+        placeholder_state={placeholder_state}
       />
       <FAB
         placement="right"

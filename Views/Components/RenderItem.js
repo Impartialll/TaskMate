@@ -15,17 +15,15 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
     }
   };
 
-  return (
-    <ListItem.Swipeable
-      bottomDivider
-      onLongPress={() => {
-        navigation.navigate("Subtasks", {
-          taskId: item.id,
-          taskName: item.name,
-        });
-      }}
+  const onLongPress = () => {
+    navigation.navigate("Subtasks", {
+      taskId: item.id,
+      taskName: item.name,
+    });
+  };
 
-      leftContent={(reset) => (
+  const leftContent = (reset) => {
+    return (
         <Button
           title="Info"
           onPress={() => {
@@ -36,9 +34,11 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
           icon={{ name: "info", color: "white" }}
           buttonStyle={{ minHeight: "100%" }}
         />
-      )
-      }
-      rightContent={(reset) => (
+    );
+  };
+
+  const rightContent = (reset) => {
+    return (
         <Button
           title="Delete"
           onPress={() => {
@@ -49,8 +49,17 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
           icon={{ name: "delete", color: "white" }}
           buttonStyle={{ minHeight: "100%", backgroundColor: "red" }}
         />
-      )
-      }
+    );
+  };
+
+  return (
+    <ListItem.Swipeable
+      bottomDivider
+      onLongPress={onLongPress}
+      leftContent={leftContent}
+      rightContent={rightContent}
+      containerStyle={styles.container}
+      style={styles.item}
     >
       <Avatar title={item.name[0]} />
       <ListItem.Content>
@@ -63,7 +72,9 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  itemStyle: {
-    width: "80%",
+  container: {
+    
+  },
+  item: {
   },
 });

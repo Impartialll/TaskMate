@@ -14,8 +14,6 @@ import categories from "../services/categories";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Separator = () => <View style={styles.itemSeparator} />;
-
 export default function Home() {
 
   const [cats, setCats] = useState([]);
@@ -66,8 +64,6 @@ export default function Home() {
     }
   };
   
-  
-
   useEffect(() => {
     fetchCats();
     fetchTasks();
@@ -132,10 +128,10 @@ export default function Home() {
         data={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
-        ItemSeparatorComponent={() => <Separator />}
+        ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         contentContainerStyle={styles.listStyle}
       />
-      <HomeFAB onClose={handleModalClose} updateTasks={fetchTasks} date={date} setDate={setDate} />
+      <HomeFAB onClose={handleModalClose} updateTasks={fetchTasks} date={date} setDate={setDate} title_state={"Нове завдання"} placeholder_state={"Назва завдання"} />
     </View>
   );
 }
@@ -148,6 +144,7 @@ const styles = StyleSheet.create({
     paddingBottom: "35%",
   },
   itemSeparator: {
+    flex: 1,
     marginVertical: 10,
   },
   textStyle: {

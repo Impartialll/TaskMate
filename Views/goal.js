@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
 import GoalFAB from "./fab/GoalFAB";
+import MyFAB from "./fab/HomeFAB";
 import MyCard from "./Components/Card";
 
 import goals from "../services/goals";
@@ -11,6 +12,7 @@ import goals from "../services/goals";
 export default function Goal() {
   const [data, setData] = useState([]);
   const [isModalClosed, setIsModalClosed] = useState(false);
+  const [date, setDate] = useState(new Date());
 
   const fetchGoals = async () => {
     try {
@@ -42,7 +44,7 @@ export default function Goal() {
     <ScrollView>
       <MyCard data={data} navigation={navigation} />
     </ScrollView>
-    <GoalFAB onClose={handleModalClose} />
+    <MyFAB onClose={handleModalClose} updateTasks={fetchGoals} date={date} setDate={setDate} title_state={"Нова ціль"} placeholder_state={"Назва цілі"} />
     </SafeAreaView>
   )
   ;

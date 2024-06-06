@@ -14,7 +14,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import tasks from "../../services/tasks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate }) {
+export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate, title_state, placeholder_state }) {
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
   const [formattedDate, setFormattedDate] = useState(date.getHours());
@@ -115,7 +115,10 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
 
   useEffect(() => {
     const days = getFormattedDate(date);
-    const time = date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+    // const time = date.getHours() + ":" + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const time = `${hours}:${minutes}`;
     setFormattedDate(days);
     setFormattedTime(time);
   }, [date]);
@@ -124,10 +127,10 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
     <Modal visible={isVisible} animationType="slide" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalHeaderText}>Нове завдання</Text>
+          <Text style={styles.modalHeaderText}>{title_state}</Text>
             <Input
               inputStyle={{fontSize: 16}}
-              placeholder="Назва завдання"
+              placeholder={placeholder_state}
               leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
               onChangeText={(text) => setName(text)}
             />
@@ -139,8 +142,8 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
             />
           <View style={styles.dateTimePickerContainer}>
             <Button 
-              containerStyle={{flex: 1, padding: 10}}
-              buttonStyle={{paddingHorizontal: 0,}}
+              containerStyle={{paddingHorizontal: 5}}
+              buttonStyle={{padding: 0}}
               title={formattedDate}
               onPress={showDatepicker}
               type="clear"
@@ -188,6 +191,7 @@ const styles = StyleSheet.create({
   dateTimePickerContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
   },
   closeSaveContainer: {
     flexDirection: "row",

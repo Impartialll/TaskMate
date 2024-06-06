@@ -11,19 +11,19 @@ export default function GoalFAB( {onClose} ) {
     const [visible, setVisible] = useState(false);
 
     const toggleOverlay = () => {
-        setVisible(!visible);
-        onClose()
+      setVisible(!visible);
+      onClose()
     };
   return (
     <View style={styles.container}>
-        <GoalModal
-        isVisible={visible}
-        toggleOverlay={toggleOverlay}
-      />
-      {/* <MyModal
+        {/* <GoalModal
         isVisible={visible}
         toggleOverlay={toggleOverlay}
       /> */}
+      <MyModal
+        isVisible={visible}
+        toggleOverlay={toggleOverlay}
+      />
       <FAB
         placement="right"
         style={styles.fabStyle}

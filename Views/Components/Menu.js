@@ -4,6 +4,7 @@ import { Button } from '@rneui/base';
 import { Menu, Divider, PaperProvider } from 'react-native-paper';
 
 import { Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function MyMenu() {
     const [visible, setVisible] = React.useState(false);
@@ -31,9 +32,9 @@ export default function MyMenu() {
             onPress={openMenu}
           />
           }>
-          <Menu.Item leadingIcon="run" onPress={() => {}} title="Всі категорії" />
+          <Menu.Item leadingIcon={() => <MaterialIcons name="category" size={24} color="black" />} onPress={() => {}} title="Категорії" />
           <Divider />
-          <Menu.Item leadingIcon="plus" onPress={() => {}} title="Створити категорію" />
+          <Menu.Item leadingIcon={() => <Entypo name="plus" size={24} color="black" />} onPress={() => {}} title="Нова категорія" />
           <Divider />
           <Menu.Item onPress={() => {}} title="Item 3" />
         </Menu>
