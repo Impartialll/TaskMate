@@ -5,14 +5,18 @@ import {
   StyleSheet,
 } from "react-native";
 import { Button, Input, Text } from "@rneui/base";
+import { TouchableWithoutFeedback } from "react-native";
 
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import tasks from "../../services/tasks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from 'react-native-uuid';
+import tasks from "../../services/tasks";
+
+import { StatusBar } from "expo-status-bar";
 
 export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate, title_state, placeholder_state }) {
   const [inputName, setName] = useState("");
@@ -73,7 +77,7 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
     if (inputName != "") {
       addHandler(inputName, inputDescription);
     }
-    toggleOverlay();
+    onCloseModal();
   };
 
   // const addHandler = async (name, description) => {
@@ -92,11 +96,11 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
   const addHandler = async (name, description) => {
     try {
       const newData = {
+        id: uuid.v4(),
         name: name.trim(),
         description: description.trim(),
         category: "none",
       };
-      // Оновлення локальних даних у AsyncStorage
       const existingTasks = await AsyncStorage.getItem('tasks');
       const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
       tasksArray.push(newData);
@@ -124,60 +128,64 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
   }, [date]);
 
   return (
-    <Modal visible={isVisible} animationType="slide" transparent>
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalHeaderText}>{title_state}</Text>
-            <Input
-              inputStyle={{fontSize: 16}}
-              placeholder={placeholder_state}
-              leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
-              onChangeText={(text) => setName(text)}
-            />
-            <Input
-              inputStyle={{fontSize: 16}}
-              placeholder="Опис (не обов'язково)"
-              leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" style={{padding: 3}} />}
-              onChangeText={(text) => setDescriptoion(text)}
-            />
-          <View style={styles.dateTimePickerContainer}>
-            <Button 
-              containerStyle={{paddingHorizontal: 5}}
-              buttonStyle={{padding: 0}}
-              title={formattedDate}
-              onPress={showDatepicker}
-              type="clear"
-            />
-            <Button 
-              containerStyle={{flex: 1, padding: 10}}
-              title={formattedTime}
-              onPress={showTimepicker}
-              type="clear"
-            />
-          </View>
-          {/* <Button title="press me" onPress={() => console.log(date.toLocaleString())} /> */}
-          <View style={styles.closeSaveContainer}>
-            <Button
-              title="Скасувати"
-              titleStyle={{fontSize: 16}}
-              size="sm"
-              containerStyle={styles.button}
-              buttonStyle={{borderWidth: 1, borderRadius: 4}}
-              onPress={onCloseModal}
-              type="outline"
-              />
-            <Button
-              title="Зберегти"
-              titleStyle={{fontSize: 16}}
-              size="sm"
-              color="secondary"
-              containerStyle={styles.button}
-              onPress={handleSave}
-              type="solid"
-            />
-          </View>
+    <Modal visible={isVisible} animationType="slide" transparent statusBarTranslucent={true}>
+      <TouchableWithoutFeedback onPress={onCloseModal}>
+        <View style={styles.modalContainer}>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalHeaderText}>{title_state}</Text>
+                <Input
+                  inputStyle={{fontSize: 16}}
+                  placeholder={placeholder_state}
+                  leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
+                  onChangeText={(text) => setName(text)}
+                  />
+                <Input
+                  inputStyle={{fontSize: 16}}
+                  placeholder="Опис (не обов'язково)"
+                  leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" style={{padding: 3}} />}
+                  onChangeText={(text) => setDescriptoion(text)}
+                  />
+              <View style={styles.dateTimePickerContainer}>
+                <Button 
+                  containerStyle={{paddingHorizontal: 5}}
+                  buttonStyle={{padding: 0}}
+                  title={formattedDate}
+                  onPress={showDatepicker}
+                  type="clear"
+                  />
+                <Button 
+                  containerStyle={{flex: 1, padding: 10}}
+                  title={formattedTime}
+                  onPress={showTimepicker}
+                  type="clear"
+                />
+              </View>
+              {/* <Button title="press me" onPress={() => console.log(date.toLocaleString())} /> */}
+              <View style={styles.closeSaveContainer}>
+                <Button
+                  title="Скасувати"
+                  titleStyle={{fontSize: 16}}
+                  size="sm"
+                  containerStyle={styles.button}
+                  buttonStyle={{borderWidth: 1, borderRadius: 4}}
+                  onPress={onCloseModal}
+                  type="outline"
+                  />
+                <Button
+                  title="Зберегти"
+                  titleStyle={{fontSize: 16}}
+                  size="sm"
+                  color="secondary"
+                  containerStyle={styles.button}
+                  onPress={handleSave}
+                  type="solid"
+                />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }

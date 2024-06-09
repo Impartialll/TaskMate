@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { ListItem, Avatar, Button, Text } from "@rneui/base";
+import { ListItem, Avatar, Button, Text, Icon } from "@rneui/base";
 import { StyleSheet } from "react-native";
-import tasks from "../../services/tasks";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function RenderItem({ item, fetchTasks, navigation }) {
-  const [isSwiped, setIsSwiped] = useState(false);
-
   const delHandler = async (id) => {
     try {
-      await tasks.deleteObject(id);
+      const existingTasks = await AsyncStorage.getItem('tasks');
+      let tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+      tasksArray = tasksArray.filter(task => task.id !== id);
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
       fetchTasks();
     } catch (error) {
-      console.error("Error deletion the task:", error);
+      console.error("Error deleting the task:", error);
     }
   };
 
@@ -27,7 +29,6 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
         <Button
           title="Info"
           onPress={() => {
-            setIsSwiped(false);
             alert("Info pressed");
             reset();
           }}
@@ -42,7 +43,6 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
         <Button
           title="Delete"
           onPress={() => {
-            setIsSwiped(false);
             delHandler(item.id);
             reset();
           }}
@@ -52,28 +52,40 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
     );
   };
 
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <ListItem.Swipeable
       bottomDivider
       onLongPress={onLongPress}
-      leftContent={leftContent}
-      rightContent={rightContent}
+      leftContent={rightContent}
+      // rightContent={}
       containerStyle={styles.container}
       style={styles.item}
     >
-      <Avatar title={item.name[0]} />
-      <ListItem.Content>
-        <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-      </ListItem.Content>
-      <ListItem.Chevron />
+    <ListItem.Accordion
+      content={
+        <>
+            <ListItem.Content>
+              <ListItem.Title>{item.name}</ListItem.Title>
+              <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+            </ListItem.Content>
+            <ListItem.CheckBox />
+            </>
+          }
+          isExpanded={expanded}
+          onPress={() => {
+            setExpanded(!expanded);
+          }}
+          >
+    </ListItem.Accordion>
     </ListItem.Swipeable>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    
+    flex: 1
   },
   item: {
   },

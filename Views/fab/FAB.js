@@ -4,7 +4,7 @@ import { FAB } from "@rneui/base";
 
 import { AntDesign } from "@expo/vector-icons";
 
-import HomeModal from "./HomeModal";
+import HomeModal from "./Modal";
 
 export default function MyFAB({ onClose, updateTasks, date, setDate, title_state, placeholder_state }) {
   const [visible, setVisible] = useState(false);

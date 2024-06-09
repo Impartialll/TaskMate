@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, FlatList, View } from "react-native";
-import { Header, Button, Tooltip } from "@rneui/base";
+import { StyleSheet, FlatList, View, Image } from "react-native";
+import { Header, Button, Text } from "@rneui/base";
 
 import { useNavigation } from "@react-navigation/native";
 
 import HeaderComponent from "./Components/Header";
 import RenderItem from "./Components/RenderItem";
-import HomeFAB from "./fab/HomeFAB";
+import HomeFAB from "./fab/FAB";
 import MyMenu from "./Components/Menu";
 
-import tasks from "../services/tasks";
 import categories from "../services/categories";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -31,24 +30,6 @@ export default function Home() {
     }
   };
 
-  // const fetchTasks = async () => {
-  //   try {
-  //     if (selectedCategory) {
-  //       if (selectedCategory === "All") {
-  //         setSelectedCategory(null);
-  //         return;
-  //       }
-  //       const response = await tasks.getByCategory(selectedCategory);
-  //       setData(response.data);
-  //     } else {
-  //       const response = await tasks.getAll();
-  //       setData(response.data);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
   const fetchTasks = async () => {
     try {
       const localData = await AsyncStorage.getItem('tasks');
@@ -60,7 +41,7 @@ export default function Home() {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setData([]); // При помилці встановіть порожній масив
+      setData([]);
     }
   };
   
@@ -103,6 +84,18 @@ export default function Home() {
     );
   };
 
+  const EmptyComponent = () => {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text h4 style={styles.emptyText}>Завдань поки немає. Створіть нові завдання.</Text>
+        <Image 
+          source={require("../assets/rounded-arrow.png")} 
+          style={styles.emptyImage} 
+        />
+    </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -119,15 +112,14 @@ export default function Home() {
           justifyContent: "center",
         }}
         containerStyle={{
-          backgroundColor: "#fff",
-          borderBottomColor: "black",
-          borderBottomWidth: 1,
+          backgroundColor: "#4285f4",
         }}
       />
       <FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
+        ListEmptyComponent={EmptyComponent}
         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         contentContainerStyle={styles.listStyle}
       />
@@ -162,5 +154,25 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "800",
     fontSize: 13,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: "70%",
+    paddingHorizontal: 20,
+  },
+  emptyImage: {
+    width: 250,
+    height: 250,
+    marginTop: 20,
+    transform: [
+      { scaleY: -1 }
+    ]
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#888',
+    textAlign: 'center',
   },
 });

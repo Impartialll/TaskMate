@@ -3,8 +3,7 @@ import { StyleSheet, View, ScrollView, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 
-import GoalFAB from "./fab/GoalFAB";
-import MyFAB from "./fab/HomeFAB";
+import MyFAB from "./fab/FAB";
 import MyCard from "./Components/Card";
 
 import goals from "../services/goals";
