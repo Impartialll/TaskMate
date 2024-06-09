@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     // height: 32,
   },
   buttonStyle: {
-    backgroundColor: "#ffb3b3",
+    backgroundColor: "#fff",
     // borderWidth: 1.5,
     // borderColor: "white",
     // borderRadius: 0,

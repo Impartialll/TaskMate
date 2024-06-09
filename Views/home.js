@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, FlatList, View, Image } from "react-native";
 import { Header, Button, Text } from "@rneui/base";
 
@@ -14,7 +14,6 @@ import categories from "../services/categories";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
-
   const [cats, setCats] = useState([]);
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -32,11 +31,11 @@ export default function Home() {
 
   const fetchTasks = async () => {
     try {
-      const localData = await AsyncStorage.getItem('tasks');
+      const localData = await AsyncStorage.getItem("tasks");
       if (localData !== null) {
         setData(JSON.parse(localData));
       } else {
-        console.log('No tasks found in local storage.');
+        console.log("No tasks found in local storage.");
         setData([]);
       }
     } catch (error) {
@@ -44,7 +43,7 @@ export default function Home() {
       setData([]);
     }
   };
-  
+
   useEffect(() => {
     fetchCats();
     fetchTasks();
@@ -60,16 +59,14 @@ export default function Home() {
   const handleModalClose = () => {
     setIsModalClosed(true);
   };
-  
+
   const navigation = useNavigation();
   const renderItem = ({ item }) => (
     <RenderItem item={item} fetchTasks={fetchTasks} navigation={navigation} />
   );
 
   const RigthComponent = () => {
-    return (
-      <MyMenu />
-    );
+    return <MyMenu />;
   };
 
   const LeftComponent = () => {
@@ -87,12 +84,14 @@ export default function Home() {
   const EmptyComponent = () => {
     return (
       <View style={styles.emptyContainer}>
-        <Text h4 style={styles.emptyText}>Завдань поки немає. Створіть нові завдання.</Text>
-        <Image 
-          source={require("../assets/rounded-arrow.png")} 
-          style={styles.emptyImage} 
+        <Text h4 style={styles.emptyText}>
+          Завдань поки немає. Створіть нові завдання.
+        </Text>
+        <Image
+          source={require("../assets/rounded-arrow.png")}
+          style={styles.emptyImage}
         />
-    </View>
+      </View>
     );
   };
 
@@ -100,7 +99,9 @@ export default function Home() {
     <View style={styles.container}>
       <Header
         leftComponent={LeftComponent}
-        centerComponent={<HeaderComponent setCat={setSelectedCategory} categories={cats} />}
+        centerComponent={
+          <HeaderComponent setCat={setSelectedCategory} categories={cats} />
+        }
         rightComponent={RigthComponent}
         leftContainerStyle={{
           justifyContent: "center",
@@ -112,7 +113,7 @@ export default function Home() {
           justifyContent: "center",
         }}
         containerStyle={{
-          backgroundColor: "#4285f4",
+          backgroundColor: "#4285F4",
         }}
       />
       <FlatList
@@ -123,7 +124,14 @@ export default function Home() {
         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         contentContainerStyle={styles.listStyle}
       />
-      <HomeFAB onClose={handleModalClose} updateTasks={fetchTasks} date={date} setDate={setDate} title_state={"Нове завдання"} placeholder_state={"Назва завдання"} />
+      <HomeFAB
+        onClose={handleModalClose}
+        updateTasks={fetchTasks}
+        date={date}
+        setDate={setDate}
+        title_state={"Нове завдання"}
+        placeholder_state={"Назва завдання"}
+      />
     </View>
   );
 }
@@ -148,7 +156,7 @@ const styles = StyleSheet.create({
     borderRadius: 17,
   },
   buttonStyle: {
-    backgroundColor: "#ffb3b3",
+    backgroundColor: "#fff",
   },
   titleStyle: {
     color: "black",
@@ -157,8 +165,8 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingTop: "70%",
     paddingHorizontal: 20,
   },
@@ -166,13 +174,11 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     marginTop: 20,
-    transform: [
-      { scaleY: -1 }
-    ]
+    transform: [{ scaleY: -1 }],
   },
   emptyText: {
     fontSize: 16,
-    color: '#888',
-    textAlign: 'center',
+    color: "#888",
+    textAlign: "center",
   },
 });
