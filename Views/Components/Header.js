@@ -1,8 +1,23 @@
-import { Text, View, StyleSheet } from "react-native";
 import React from "react";
+import { Text, View, StyleSheet } from "react-native";
 import { Button } from "@rneui/base";
 
-export default function HeaderComponent({ categories, setCat }) {
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export default function HeaderComponent({ categories, setCat, setCats }) {
+
+  const deleteCategory = async (categoryId) => {
+    try {
+      const existingCategories = await AsyncStorage.getItem('categories');
+      let categoriesArray = existingCategories ? JSON.parse(existingCategories) : [];
+      categoriesArray = categoriesArray.filter(category => category.id !== categoryId);
+      await AsyncStorage.setItem('categories', JSON.stringify(categoriesArray));
+      setCats(categoriesArray);
+    } catch (error) {
+      console.error("Error deleting the category:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {categories.slice(0, 3).map((item) => (
@@ -31,17 +46,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginHorizontal: 8,
     borderRadius: 17,
-    // height: 32,
   },
   buttonStyle: {
     backgroundColor: "#fff",
-    // borderWidth: 1.5,
-    // borderColor: "white",
-    // borderRadius: 0,
   },
   titleStyle: {
-    // paddingBottom: 5,
-    color: "black",
+    color: "#AD1457",
     fontWeight: "800",
     fontSize: 13,
   },

@@ -14,9 +14,6 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from 'react-native-uuid';
-import tasks from "../../services/tasks";
-
-import { StatusBar } from "expo-status-bar";
 
 export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate, title_state, placeholder_state }) {
   const [inputName, setName] = useState("");
@@ -75,25 +72,12 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
 
   const handleSave = () => {
     if (inputName != "") {
-      addHandler(inputName, inputDescription);
+      addTask(inputName, inputDescription);
     }
     onCloseModal();
   };
 
-  // const addHandler = async (name, description) => {
-  //   try {
-  //     const newData = {
-  //       name: name.trim(),
-  //       description: description.trim(),
-  //       category: "none",
-  //     };
-  //     await tasks.create(newData);
-  //   } catch (error) {
-  //     console.error("Error adding the task:", error);
-  //   }
-  // };
-
-  const addHandler = async (name, description) => {
+  const addTask = async (name, description) => {
     try {
       const newData = {
         id: uuid.v4(),

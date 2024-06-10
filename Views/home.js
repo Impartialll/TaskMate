@@ -12,21 +12,54 @@ import MyMenu from "./Components/Menu";
 import categories from "../services/categories";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from 'react-native-uuid';
 
 export default function Home() {
   const [cats, setCats] = useState([]);
   const [data, setData] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [isModalClosed, setIsModalClosed] = useState(false);
+  const [isFABModalClosed, setIsFABModalClosed] = useState(false);
   const [date, setDate] = useState(new Date());
+
+  const [menuModalVisible, setMenuModalVisible] = useState(false);
 
   const fetchCats = async () => {
     try {
-      const response = await categories.getAll();
-      setCats(response.data);
+      const localData = await AsyncStorage.getItem('categories');
+      if (localData !== null) {
+        setCats(JSON.parse(localData));
+      } else {
+        console.log('No categories found in local storage.');
+        setCats([]);
+      }
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
+  };
+
+  const addCategory = async (newCategory) => {
+    try {
+      const newData = {
+        id: uuid.v4(),
+        name: newCategory,
+      };
+      const existingCategories = await AsyncStorage.getItem('categories');
+      const categoriesArray = existingCategories ? JSON.parse(existingCategories) : [];
+      categoriesArray.push(newData);
+      await AsyncStorage.setItem('categories', JSON.stringify(categoriesArray));
+      setCats(categoriesArray);
+    } catch (error) {
+      console.error("Error adding the category:", error);
+    }
+  };
+
+  const openCategoryModal = () => {
+    setMenuModalVisible(true);
+  };
+
+  const closeCategoryModal = () => {
+    setMenuModalVisible(false);
+    fetchCats();
   };
 
   const fetchTasks = async () => {
@@ -50,14 +83,14 @@ export default function Home() {
   }, [selectedCategory]);
 
   useEffect(() => {
-    if (isModalClosed) {
+    if (isFABModalClosed) {
       fetchTasks();
-      setIsModalClosed(false);
+      setIsFABModalClosed(false);
     }
-  }, [isModalClosed]);
+  }, [isFABModalClosed]);
 
   const handleModalClose = () => {
-    setIsModalClosed(true);
+    setIsFABModalClosed(true);
   };
 
   const navigation = useNavigation();
@@ -66,7 +99,12 @@ export default function Home() {
   );
 
   const RigthComponent = () => {
-    return <MyMenu />;
+    return <MyMenu
+    createCategoryModal={openCategoryModal}
+    isModalVisible={menuModalVisible}
+    onCreate={addCategory}
+    onClose={closeCategoryModal}
+    />;
   };
 
   const LeftComponent = () => {
@@ -100,7 +138,7 @@ export default function Home() {
       <Header
         leftComponent={LeftComponent}
         centerComponent={
-          <HeaderComponent setCat={setSelectedCategory} categories={cats} />
+          <HeaderComponent setCat={setSelectedCategory} categories={cats} setCats={setCats} />
         }
         rightComponent={RigthComponent}
         leftContainerStyle={{
@@ -156,10 +194,10 @@ const styles = StyleSheet.create({
     borderRadius: 17,
   },
   buttonStyle: {
-    backgroundColor: "#fff",
+    backgroundColor: "#AD1457",
   },
   titleStyle: {
-    color: "black",
+    color: "#fff",
     fontWeight: "800",
     fontSize: 13,
   },
