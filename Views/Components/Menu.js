@@ -9,11 +9,26 @@ import { MaterialIcons } from '@expo/vector-icons';
 import CategoriesMenu from './CategoriesMenu';
 import NewCategory from './NewCategory';
 
-export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, onClose }) {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, onClose, categories, setCats, fetchCats }) {
     const [visible, setVisible] = React.useState(false);
 
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
+
+    const deleteCategory = async (categoryId) => {
+      try {
+        const existingCategories = await AsyncStorage.getItem('categories');
+        let categoriesArray = existingCategories ? JSON.parse(existingCategories) : [];
+        categoriesArray = categoriesArray.filter(category => category.id !== categoryId);
+        await AsyncStorage.setItem('categories', JSON.stringify(categoriesArray));
+        setCats(categoriesArray);
+        fetchCats();
+      } catch (error) {
+        console.error("Error deleting the category:", error);
+      }
+    };
 
   return (
       <View
@@ -28,19 +43,25 @@ export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, 
           onDismiss={closeMenu}
           anchor={
             <Button
-            icon={<Entypo name="dots-three-vertical" size={14} color="black" />}
+            icon={() => <Entypo name="dots-three-vertical" size={14} color="black" />}
             type="clear"
-            buttonStyle={{}}
             containerStyle={{}}
             onPress={openMenu}
+            style={{justifyContent: "center", alignItems: "center", flex: 1}}
           />
           }>
           {/* <Menu.Item leadingIcon={() => <MaterialIcons name="category" size={24} color="black" />} onPress={() => {}} title="Категорії" /> */}
-          <CategoriesMenu />
+          <CategoriesMenu
+          categories={categories}
+          deleteCategory={deleteCategory}
+          />
           <Divider />
-          <Menu.Item leadingIcon={() => <Entypo name="plus" size={24} color="black" />} onPress={createCategoryModal} title="Нова категорія" />
-          <Divider />
-          <Menu.Item onPress={() => {}} title="Item 3" />
+          <Menu.Item
+          leadingIcon={() => <Entypo name="plus" size={24} color="black" style={{paddingTop: 2,}} />}
+          onPress={createCategoryModal}
+          title="Нова категорія"
+          style={{justifyContent: "center", alignItems: "center", flex: 1}}
+          />
         </Menu>
         <NewCategory
           visible={isModalVisible}

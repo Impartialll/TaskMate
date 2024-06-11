@@ -38,10 +38,6 @@ export default function NewCategory({ visible, onClose, onCreate, closeMenu }) {
                     leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
                     onChangeText={(text) => setCategoryName(text)}
                 />
-                {/* <View style={styles.buttonContainer}>
-                <Button title={"Створити"} style={styles.button} onPress={handleCreate} />
-                <Button title={"Скасувати"} style={[styles.button, styles.cancelButton]} onPress={handleClose} />
-                </View> */}
                 <View style={styles.closeSaveContainer}>
                     <Button
                     title="Скасувати"

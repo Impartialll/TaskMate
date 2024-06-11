@@ -104,6 +104,9 @@ export default function Home() {
     isModalVisible={menuModalVisible}
     onCreate={addCategory}
     onClose={closeCategoryModal}
+    categories={cats}
+    setCats={setCats}
+    fetchCats={fetchCats}
     />;
   };
 

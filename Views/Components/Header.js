@@ -28,6 +28,7 @@ export default function HeaderComponent({ categories, setCat, setCats }) {
           containerStyle={styles.buttonContainer}
           titleStyle={styles.titleStyle}
           onPress={() => setCat(item.name)}
+          onLongPress={() => AsyncStorage.removeItem('categories')}
         />
       ))}
     </View>
