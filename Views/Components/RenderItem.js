@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ListItem, Avatar, Button, Text, Icon } from "@rneui/base";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Dimensions } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { Swipeable } from "react-native-gesture-handler";
+
+const { width } = Dimensions.get('window');
 
 export default function RenderItem({ item, fetchTasks, navigation }) {
   const delHandler = async (id) => {
@@ -52,24 +56,8 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
     );
   };
 
-  const [expanded, setExpanded] = useState(false);
-
+  const [checked, setChecked] = useState(false);
   return (
-    <ListItem.Accordion
-      content={
-        <>
-          <ListItem.Content>
-            <ListItem.Title>{item.name}</ListItem.Title>
-            <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-          </ListItem.Content>
-          <ListItem.CheckBox />
-        </>
-      }
-      isExpanded={expanded}
-      onPress={() => {
-        setExpanded(!expanded);
-      }}
-    >
       <ListItem.Swipeable
         bottomDivider
         onLongPress={onLongPress}
@@ -78,19 +66,47 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
         containerStyle={styles.container}
         style={styles.item}
       >
-        <ListItem.Content>
-          <ListItem.Title>{item.name}</ListItem.Title>
-          <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-        </ListItem.Content>
-        <ListItem.CheckBox />
+          <ListItem.Content>
+            <ListItem.Title>{item.name}</ListItem.Title>
+            <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
+            <Text>{item.reminderDate}</Text>
+          </ListItem.Content>
+          <ListItem.CheckBox checked={checked} onPress={() => setChecked(!checked)} />
       </ListItem.Swipeable>
-    </ListItem.Accordion>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  item: {},
+  listItem: {
+    width: width * 0.9,
+    borderRadius: 15,
+    overflow: 'hidden',
+    backgroundColor: 'white',
+  },
+  completed: {
+    backgroundColor: '#d3d3d3', // Сірий колір для позначення виконаного завдання
+  },
+  leftSwipe: {
+    backgroundColor: 'blue',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 75,
+    height: '100%',
+    borderTopLeftRadius: 15,
+    borderBottomLeftRadius: 15,
+  },
+  rightSwipe: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 75,
+    height: '100%',
+    borderTopRightRadius: 15,
+    borderBottomRightRadius: 15,
+  },
 });

@@ -20,8 +20,19 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["NOTIFICATIONS"]
+      "permissions": ["NOTIFICATIONS", "android.permission.SCHEDULE_EXACT_ALARM"]
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/path/to/myNotificationIcon.png",
+          "color": "#ffffff",
+          "sounds": ["./local/path/to/mySound.wav", "./local/path/to/myOtherSound.wav"],
+          "mode": "production"
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     }

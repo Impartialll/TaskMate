@@ -4,15 +4,13 @@ import { Header, Button, Text } from "@rneui/base";
 
 import { useNavigation } from "@react-navigation/native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from 'react-native-uuid';
+
 import HeaderComponent from "./Components/Header";
 import RenderItem from "./Components/RenderItem";
 import HomeFAB from "./fab/FAB";
 import MyMenu from "./Components/Menu";
-
-import categories from "../services/categories";
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import uuid from 'react-native-uuid';
 
 export default function Home() {
   const [cats, setCats] = useState([]);
@@ -164,7 +162,7 @@ export default function Home() {
         ListEmptyComponent={EmptyComponent}
         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         contentContainerStyle={styles.listStyle}
-      />
+        />
       <HomeFAB
         onClose={handleModalClose}
         updateTasks={fetchTasks}
@@ -172,7 +170,7 @@ export default function Home() {
         setDate={setDate}
         title_state={"Нове завдання"}
         placeholder_state={"Назва завдання"}
-      />
+        />
     </View>
   );
 }
@@ -186,7 +184,7 @@ const styles = StyleSheet.create({
   },
   itemSeparator: {
     flex: 1,
-    marginVertical: 10,
+    marginVertical: 0,
   },
   textStyle: {
     width: "100%",

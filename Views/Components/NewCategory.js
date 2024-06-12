@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, View, Modal } from 'react-native';
+import { StyleSheet, View, Modal, TouchableWithoutFeedback } from 'react-native';
 import { Text, Button, Input } from '@rneui/base';
 
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -29,37 +29,41 @@ export default function NewCategory({ visible, onClose, onCreate, closeMenu }) {
             animationType="slide"
             onRequestClose={handleClose}
         >
-            <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-                <Text style={styles.modalTitle}>Нова категорія</Text>
-                <Input
-                    inputStyle={{fontSize: 16}}
-                    placeholder="Назва категорії"
-                    leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
-                    onChangeText={(text) => setCategoryName(text)}
-                />
-                <View style={styles.closeSaveContainer}>
-                    <Button
-                    title="Скасувати"
-                    titleStyle={{fontSize: 16}}
-                    size="sm"
-                    containerStyle={styles.button}
-                    buttonStyle={{borderWidth: 1, borderRadius: 4}}
-                    onPress={handleClose}
-                    type="outline"
-                    />
-                    <Button
-                    title="Зберегти"
-                    titleStyle={{fontSize: 16}}
-                    size="sm"
-                    color="secondary"
-                    containerStyle={styles.button}
-                    onPress={handleCreate}
-                    type="solid"
-                    />
+            <TouchableWithoutFeedback onPress={onClose}>
+                <View style={styles.modalOverlay}>
+                    <TouchableWithoutFeedback>
+                        <View style={styles.modalContainer}>
+                            <Text style={styles.modalTitle}>Нова категорія</Text>
+                            <Input
+                                inputStyle={{fontSize: 16}}
+                                placeholder="Назва категорії"
+                                leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
+                                onChangeText={(text) => setCategoryName(text)}
+                            />
+                            <View style={styles.closeSaveContainer}>
+                                <Button
+                                title="Скасувати"
+                                titleStyle={{fontSize: 16}}
+                                size="sm"
+                                containerStyle={styles.button}
+                                buttonStyle={{borderWidth: 1, borderRadius: 4}}
+                                onPress={handleClose}
+                                type="outline"
+                                />
+                                <Button
+                                title="Зберегти"
+                                titleStyle={{fontSize: 16}}
+                                size="sm"
+                                color="secondary"
+                                containerStyle={styles.button}
+                                onPress={handleCreate}
+                                type="solid"
+                                />
+                            </View>
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
-            </View>
-            </View>
+            </TouchableWithoutFeedback>
         </Modal>
     )
 };

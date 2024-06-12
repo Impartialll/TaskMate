@@ -15,6 +15,8 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from 'react-native-uuid';
 
+import { scheduleNotification } from "../Components/NotificationService";
+
 export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate, title_state, placeholder_state }) {
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
@@ -72,23 +74,30 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
 
   const handleSave = () => {
     if (inputName != "") {
-      addTask(inputName, inputDescription);
+      addTask(inputName, inputDescription, date);
     }
     onCloseModal();
   };
 
-  const addTask = async (name, description) => {
+  const addTask = async (name, description, reminderDate) => {
     try {
+      if (!(reminderDate instanceof Date)) {
+        throw new Error('Invalid date');
+      }
       const newData = {
         id: uuid.v4(),
         name: name.trim(),
         description: description.trim(),
         category: "none",
+        reminderDate: reminderDate ? reminderDate.toISOString() : null,
       };
       const existingTasks = await AsyncStorage.getItem('tasks');
       const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
       tasksArray.push(newData);
       await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+      if (reminderDate) {
+        await scheduleNotification(newData.id, newData.name, newData.reminderDate);
+      }
       updateTasks();
     } catch (error) {
       console.error("Error adding the task:", error);
