@@ -1,21 +1,79 @@
 import React from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Text, Card, Button } from "@rneui/base";
-import { ProgressBar, MD3Colors } from 'react-native-paper';
+import { ProgressBar } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
-
-const MyProgress = () => (
-    <ProgressBar
-    progress={Math.random()}
-    color={"yellow"}
-    style={styles.progressBar} 
-    />
-  );
+import { differenceInDays, differenceInMinutes, isToday, isPast, isTomorrow, isYesterday, parseISO, format } from 'date-fns';
 
 export default function MyCard({ item, navigation }) {
-  const colours = ["#3CBC3C", "red", "#D77D00"]
+
+  function formatDateToDDMMYYYY(dateString) {
+    const date = new Date(dateString);
+    return format(date, 'dd.MM.yyyy');
+  }
+  
+  const MyProgress = () => (
+      <ProgressBar
+      progress={Math.random()}
+      color={"yellow"}
+      style={styles.progressBar} 
+      />
+    );
+
+    function getDaysEnding(days) {
+      if (days === 1) {
+        return 'день';
+      } else if (days >= 2 && days <= 4) {
+        return 'дні';
+      } else {
+        return 'днів';
+      }
+    }
+    
+    function getDateStatus(reminderDate) {
+      const date = parseISO(reminderDate);
+      const now = new Date();
+    
+      const daysDifference = differenceInDays(date, now);
+      const minutesDifference = differenceInMinutes(date, now);
+    
+      if (isToday(date)) {
+        if (minutesDifference > 0) {
+          return 'Прострочено сьогодні';
+        } else {
+          return 'Закінчується сьогодні';
+        }
+      } else if (isYesterday(date)) {
+        return 'Прострочено вчора';
+      } else if (isPast(date)) {
+        const daysAgo = -daysDifference;
+        const daysEnding = getDaysEnding(daysAgo);
+        return `Прострочено ${daysAgo} ${daysEnding} тому`;
+      } else if (isTomorrow(date)) {
+        return 'Залишився один день';
+      } else {
+        const daysEnding = getDaysEnding(daysDifference);
+        return `Днів залишилося: ${daysDifference} ${daysEnding}`;
+      }
+    }
+
+  function getTaskStatus(reminderDate) {
+    const colours = ["#3CBC3C", "#D77D00", "red"]
+    const date = parseISO(reminderDate);
+    const now = new Date();
+  
+    const daysDifference = differenceInDays(date, now);
+  
+    if (isPast(date)) {
+      return colours[2];
+    } else if (daysDifference <= 7) {
+      return colours[1];
+    } else {
+      return colours[0];
+    }
+  }
+
   return (
-        <View style={styles.container}>
         <Pressable
               key={item.id}
               onLongPress={() => {
@@ -25,7 +83,7 @@ export default function MyCard({ item, navigation }) {
                 });
               }}>
           <Card containerStyle={styles.card}>
-            <View style={[styles.containerTitle, {backgroundColor: item.id[0] == "0" ? colours[1] : colours[2]}]}>
+            <View style={[styles.containerTitle, {backgroundColor: getTaskStatus(item.reminderDate)}]}>
               <View style={styles.titleLeft}>
                 <Text h4 style={styles.textName} >{item.name}</Text>
               </View>
@@ -36,28 +94,22 @@ export default function MyCard({ item, navigation }) {
             <Card.Divider />
             <View style={styles.containerUnder}>
               <View style={styles.description}>
-                <Text>TRY THE LONGPRESS</Text>
                 <Text style={styles.name}>{item.description}</Text>
               </View>
               <View style={styles.underRight}>
                 <View style={styles.date}>
                   <Feather name="clock" size={32} color="black" styles={styles.dateIcon} />
-                  <Text style={styles.dateText}>26.09.2023</Text>
+                  <Text style={styles.dateText}>{formatDateToDDMMYYYY(item.reminderDate)}</Text>
                 </View>
-                <Text style={{fontWeight: "bold", padding: 10}}>Днів залишилося: 32</Text>
+                <Text style={{fontWeight: "bold", padding: 10}}>{getDateStatus(item.reminderDate)}</Text>
             </View>
               </View>
           </Card>
         </Pressable>
-      </View>
     );
 };
 
 const styles = StyleSheet.create({
-    container:{
-      paddingBottom: "35%",
-      paddingHorizontal: 10,
-    },
     card: {
       borderRadius: 20,
       padding: 0,

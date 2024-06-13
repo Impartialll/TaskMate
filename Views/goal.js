@@ -13,15 +13,6 @@ export default function Goal() {
   const [isModalClosed, setIsModalClosed] = useState(false);
   const [date, setDate] = useState(new Date());
 
-  // const fetchGoals = async () => {
-  //   try {
-  //       const response = await goals.getAll();
-  //       setData(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
   const fetchGoals = async () => {
     try {
       const localData = await AsyncStorage.getItem('goals');
@@ -71,7 +62,7 @@ export default function Goal() {
 
   const navigation = useNavigation();
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{flex: 1}}>
     <FlatList
       data={data}
       keyExtractor={(item, index) => index.toString()}
@@ -95,24 +86,13 @@ export default function Goal() {
 
 
 const styles = StyleSheet.create({
-  container: {
+  listStyle: {
+    paddingBottom: "40%",
+    marginTop: 10,
+  },
+  itemSeparator: {
     flex: 1,
-  },
-  fonts: {
-    marginBottom: 8,
-  },
-  user: {
-    flexDirection: 'row',
-    marginBottom: 6,
-  },
-  image: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
-  name: {
-    fontSize: 16,
-    marginTop: 5,
+    marginVertical: 5,
   },
   emptyContainer: {
     flex: 1,

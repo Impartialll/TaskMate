@@ -9,7 +9,7 @@ import Navigation from "./Views/navigation/Navigation";
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { registerForPushNotificationsAsync } from "./Views/Components/NotificationService";
+import { registerForPushNotificationsAsync } from "./Views/notifications/NotificationService";
 
 export default function App() {
   useEffect(() => {

@@ -10,7 +10,7 @@ import uuid from 'react-native-uuid';
 
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
-import { scheduleNotification } from "../Components/NotificationService";
+import { scheduleNotification } from "../notifications/NotificationService";
 
 export default function MyModal({ isVisible, toggleOverlay, updateData, date, setDate, title_state, placeholder_state, state }) {
   const [inputName, setName] = useState("");
