@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Modal,
-  StyleSheet,
-} from "react-native";
+import { View, Modal, StyleSheet } from "react-native";
 import { Button, Input, Text } from "@rneui/base";
 import { TouchableWithoutFeedback } from "react-native";
 
-import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
-
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import uuid from 'react-native-uuid';
+
+import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 import { scheduleNotification } from "../Components/NotificationService";
 
-export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, setDate, title_state, placeholder_state }) {
+export default function MyModal({ isVisible, toggleOverlay, updateData, date, setDate, title_state, placeholder_state, state }) {
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
   const [formattedDate, setFormattedDate] = useState(date.getHours());
@@ -74,16 +69,17 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
 
   const handleSave = () => {
     if (inputName != "") {
-      addTask(inputName, inputDescription, date);
+      if (state === "tasks") {
+        addTask(inputName, inputDescription, date);
+      } else if (state === "goals") {
+        addGoal(inputName, inputDescription, date)
+      }
     }
     onCloseModal();
   };
 
   const addTask = async (name, description, reminderDate) => {
     try {
-      if (!(reminderDate instanceof Date)) {
-        throw new Error('Invalid date');
-      }
       const newData = {
         id: uuid.v4(),
         name: name.trim(),
@@ -98,9 +94,30 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
       if (reminderDate) {
         await scheduleNotification(newData.id, newData.name, newData.reminderDate);
       }
-      updateTasks();
+      updateData();
     } catch (error) {
       console.error("Error adding the task:", error);
+    }
+  };
+
+  const addGoal = async (name, description, reminderDate) => {
+    try {
+      const newData = {
+        id: uuid.v4(),
+        name: name.trim(),
+        description: description.trim(),
+        reminderDate: reminderDate ? reminderDate.toISOString() : null,
+      };
+      const existingGoals = await AsyncStorage.getItem('goals');
+      const goalsArray = existingGoals ? JSON.parse(existingGoals) : [];
+      goalsArray.push(newData);
+      await AsyncStorage.setItem('goals', JSON.stringify(goalsArray));
+      if (reminderDate) {
+        await scheduleNotification(newData.id, newData.name, newData.reminderDate);
+      }
+      updateData();
+    } catch (error) {
+      console.error("Error adding the goal:", error);
     }
   };
 
@@ -119,6 +136,8 @@ export default function MyModal({ isVisible, toggleOverlay, updateTasks, date, s
     setFormattedDate(days);
     setFormattedTime(time);
   }, [date]);
+
+  const [expanded, setExpanded] = useState(false);
 
   return (
     <Modal visible={isVisible} animationType="slide" transparent statusBarTranslucent={true}>

@@ -111,7 +111,7 @@ export default function Home() {
   const LeftComponent = () => {
     return (
       <Button
-        title={"All"}
+        title={"Всі"}
         buttonStyle={styles.buttonStyle}
         containerStyle={styles.buttonContainer}
         titleStyle={styles.titleStyle}
@@ -154,7 +154,7 @@ export default function Home() {
         containerStyle={{
           backgroundColor: "#4285F4",
         }}
-      />
+        />
       <FlatList
         data={data}
         keyExtractor={(item, index) => index.toString()}
@@ -165,11 +165,12 @@ export default function Home() {
         />
       <HomeFAB
         onClose={handleModalClose}
-        updateTasks={fetchTasks}
+        updateData={fetchTasks}
         date={date}
         setDate={setDate}
         title_state={"Нове завдання"}
         placeholder_state={"Назва завдання"}
+        state="tasks"
         />
     </View>
   );
@@ -181,10 +182,11 @@ const styles = StyleSheet.create({
   },
   listStyle: {
     paddingBottom: "35%",
+    marginTop: 10,
   },
   itemSeparator: {
     flex: 1,
-    marginVertical: 0,
+    marginVertical: 10,
   },
   textStyle: {
     width: "100%",

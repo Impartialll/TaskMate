@@ -12,24 +12,22 @@ const MyProgress = () => (
     />
   );
 
-export default function MyCard({ data, navigation }) {
+export default function MyCard({ item, navigation }) {
   const colours = ["#3CBC3C", "red", "#D77D00"]
   return (
-    <View style={styles.container}>
-    {data.map((goal) => {
-      return (
+        <View style={styles.container}>
         <Pressable
-              key={goal.id}
+              key={item.id}
               onLongPress={() => {
                 navigation.navigate("Goal Subtasks", {
-                  goalName: goal.name,
-                  goalId: goal.id,
+                  goalName: item.name,
+                  goalId: item.id,
                 });
               }}>
           <Card containerStyle={styles.card}>
-            <View style={[styles.containerTitle, {backgroundColor: goal.id[0] == "0" ? colours[1] : colours[2]}]}>
+            <View style={[styles.containerTitle, {backgroundColor: item.id[0] == "0" ? colours[1] : colours[2]}]}>
               <View style={styles.titleLeft}>
-                <Text h4 style={styles.textName} >{goal.name}</Text>
+                <Text h4 style={styles.textName} >{item.name}</Text>
               </View>
               <View style={styles.titleRight}>
                 <MyProgress/>
@@ -39,7 +37,7 @@ export default function MyCard({ data, navigation }) {
             <View style={styles.containerUnder}>
               <View style={styles.description}>
                 <Text>TRY THE LONGPRESS</Text>
-                <Text style={styles.name}>{goal.description}</Text>
+                <Text style={styles.name}>{item.description}</Text>
               </View>
               <View style={styles.underRight}>
                 <View style={styles.date}>
@@ -51,10 +49,8 @@ export default function MyCard({ data, navigation }) {
               </View>
           </Card>
         </Pressable>
-        );
-      })}
       </View>
-  )
+    );
 };
 
 const styles = StyleSheet.create({
