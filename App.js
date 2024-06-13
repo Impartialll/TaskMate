@@ -9,7 +9,6 @@ import Navigation from "./Views/navigation/Navigation";
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-
 import { registerForPushNotificationsAsync } from "./Views/Components/NotificationService";
 
 export default function App() {
@@ -18,7 +17,7 @@ export default function App() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <GestureHandlerRootView style={{flex: 1}}>
     <PaperProvider>
       <Navigation/>
       <StatusBar style="auto" />
@@ -26,9 +25,3 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigator from "./TabNavigator";
 import Subtasks from "../subtasks";
 import GoalSubtasks from "../goalSubtasks";
+import Settings from "../settings";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,8 +25,11 @@ export default function Navigation({ tasks, cats, setCat, fetchTasks, fetchGoals
         />
         <Stack.Screen
           name="Goal Subtasks"
-
           children={() => <GoalSubtasks />}
+        />
+        <Stack.Screen
+          name="Settings"
+          children={() => <Settings />}
         />
       </Stack.Navigator>
     </NavigationContainer>
