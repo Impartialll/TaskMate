@@ -18,10 +18,10 @@ export default function App() {
 
   return (
     <GestureHandlerRootView style={{flex: 1}}>
-    <PaperProvider>
-      <Navigation/>
-      <StatusBar style="auto" />
-    </PaperProvider>
+      <PaperProvider>
+        <Navigation/>
+        <StatusBar style="auto" />
+      </PaperProvider>
     </GestureHandlerRootView>
   );
 }

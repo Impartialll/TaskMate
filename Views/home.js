@@ -94,20 +94,20 @@ export default function Home() {
 
   const navigation = useNavigation();
   const renderItem = ({ item }) => (
-    <RenderItem item={item} fetchTasks={fetchTasks} navigation={navigation} />
+    <RenderItem item={item} categories={cats} fetchTasks={fetchTasks} navigation={navigation} />
   );
 
-  const RigthComponent = () => {
-    return <MyMenu
-    createCategoryModal={openCategoryModal}
-    isModalVisible={menuModalVisible}
-    onCreate={addCategory}
-    onClose={closeCategoryModal}
-    categories={cats}
-    setCats={setCats}
-    fetchCats={fetchCats}
-    />;
-  };
+  const RigthComponent = () => (
+    <MyMenu
+      createCategoryModal={openCategoryModal}
+      isModalVisible={menuModalVisible}
+      onCreate={addCategory}
+      onClose={closeCategoryModal}
+      categories={cats}
+      setCats={setCats}
+      fetchCats={fetchCats}
+      />
+  );
 
   const LeftComponent = () => {
     return (
@@ -117,7 +117,7 @@ export default function Home() {
         buttonStyle={styles.buttonStyle}
         titleStyle={styles.titleStyle}
         onPress={() => setSelectedCategory("All")}
-      />
+        />
     );
   };
 

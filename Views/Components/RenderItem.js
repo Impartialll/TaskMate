@@ -9,30 +9,37 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { format, isToday, isTomorrow, isYesterday, differenceInDays } from "date-fns";
 import { uk } from "date-fns/locale"
 
-export default function RenderItem({ item, fetchTasks, navigation }) {
+export default function RenderItem({ item, fetchTasks, navigation, categories }) {
 
+  function pluralizeDays(days) {
+    if (days === 1) return 'день';
+    if (days >= 2 && days <= 4) return 'дні';
+    return 'днів';
+  }
+  
   function formatReminderDate(reminderDate) {
     const date = new Date(reminderDate);
     const now = new Date();
-  
-    let formattedDate;
+    
+    let formattedDate = [];
     
     if (isToday(date)) {
-      formattedDate = `Сьогодні\n${format(date, 'HH:mm')}`;
+      formattedDate = ['Сьогодні', format(date, 'HH:mm')];
     } else if (isTomorrow(date)) {
-      formattedDate = `Завтра\n${format(date, 'HH:mm')}`;
+      formattedDate = ['Завтра', format(date, 'HH:mm')];
     } else if (isYesterday(date)) {
-      formattedDate = `Вчора\n${format(date, 'HH:mm')}`;
+      formattedDate = ['Вчора', format(date, 'HH:mm')];
     } else {
       const daysDiff = differenceInDays(date, now);
-  
+    
       if (daysDiff < 0) {
-        formattedDate = `Прострочено\n${format(date, 'dd.MM')}`;
+        formattedDate = ['Прострочено', format(date, 'dd.MM')];
       } else {
-        formattedDate = `${format(date, 'dd.MM')}\nзалишилось ${daysDiff} дні(в)`;
+        const daysText = pluralizeDays(daysDiff);
+        formattedDate = [format(date, 'dd.MM'), `Ще ${daysDiff} ${daysText}`];
       }
     }
-  
+    
     return formattedDate;
   }
 
@@ -52,6 +59,7 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
     navigation.navigate("Subtasks", {
       taskId: item.id,
       taskName: item.name,
+      categories: categories,
     });
   };
 
@@ -78,11 +86,14 @@ export default function RenderItem({ item, fetchTasks, navigation }) {
         containerStyle={styles.container}
         onPress={() => console.log(formatReminderDate(item.reminderDate))}
       >
-          <ListItem.Content style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 10}}>
+          <ListItem.Content style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 0}}>
             <FontAwesome5 name="running" size={24} color="black" style={{marginLeft: 5}} />
-            <ListItem.Title>{item.name}</ListItem.Title>
-            <ListItem.Subtitle>{item.description}</ListItem.Subtitle>
-            <Text style={{marginRight: 5, textAlign: "center"}}>{formatReminderDate(item.reminderDate)}</Text>
+            <ListItem.Title style={{width: 70,  textAlign: "center", fontWeight: "700"}}>{item.name}</ListItem.Title>
+            <ListItem.Subtitle style={{width: 50, textAlign: "center", fontWeight: "700"}}>{item.description}</ListItem.Subtitle>
+            <View style={{width: 100}} >
+              <Text style={{marginRight: 5, textAlign: "center", fontWeight: "700", paddingVertical: 5}}>{formatReminderDate(item.reminderDate)[0]}</Text>
+              <Text style={{marginRight: 5, textAlign: "center", fontWeight: "700", paddingVertical: 5}}>{formatReminderDate(item.reminderDate)[1]}</Text>
+            </View>
           </ListItem.Content>
           <ListItem.CheckBox
             checked={checked}

@@ -28,7 +28,6 @@ export default function MyFAB({ onClose, updateData, date, setDate, title_state,
       />
       <FAB
         placement="right"
-        style={styles.fabStyle}
         onPress={toggleOverlay}
         icon={() => {
           return <AntDesign name="plus" size={24} color="#fff" />;

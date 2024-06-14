@@ -137,8 +137,6 @@ export default function MyModal({ isVisible, toggleOverlay, updateData, date, se
     setFormattedTime(time);
   }, [date]);
 
-  const [expanded, setExpanded] = useState(false);
-
   return (
     <Modal visible={isVisible} animationType="slide" transparent statusBarTranslucent={true}>
       <TouchableWithoutFeedback onPress={onCloseModal}>

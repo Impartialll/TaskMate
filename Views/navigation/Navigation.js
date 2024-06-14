@@ -8,7 +8,7 @@ import Settings from "../settings";
 
 const Stack = createNativeStackNavigator();
 
-export default function Navigation({ tasks, cats, setCat, fetchTasks, fetchGoals }) {
+export default function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -21,15 +21,15 @@ export default function Navigation({ tasks, cats, setCat, fetchTasks, fetchGoals
         />
         <Stack.Screen
           name="Subtasks"
-          children={() => <Subtasks fetchTasks={fetchTasks} />}
+          children={() => <Subtasks/>}
         />
         <Stack.Screen
           name="Goal Subtasks"
-          children={() => <GoalSubtasks />}
+          children={() => <GoalSubtasks/>}
         />
         <Stack.Screen
           name="Settings"
-          children={() => <Settings />}
+          children={() => <Settings/>}
         />
       </Stack.Navigator>
     </NavigationContainer>
