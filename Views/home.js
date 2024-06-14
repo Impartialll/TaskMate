@@ -11,6 +11,7 @@ import HeaderComponent from "./Components/Header";
 import RenderItem from "./Components/RenderItem";
 import HomeFAB from "./fab/FAB";
 import MyMenu from "./Components/Menu";
+import FlashMessage from "react-native-flash-message";
 
 export default function Home() {
   const [cats, setCats] = useState([]);
@@ -112,8 +113,8 @@ export default function Home() {
     return (
       <Button
         title={"Всі"}
+        containerStyle={[styles.buttonContainer, {borderColor: selectedCategory === "All" ? "#fff" : "#AD1457"}]}
         buttonStyle={styles.buttonStyle}
-        containerStyle={styles.buttonContainer}
         titleStyle={styles.titleStyle}
         onPress={() => setSelectedCategory("All")}
       />
@@ -139,21 +140,13 @@ export default function Home() {
       <Header
         leftComponent={LeftComponent}
         centerComponent={
-          <HeaderComponent setCat={setSelectedCategory} categories={cats} setCats={setCats} />
+          <HeaderComponent setCat={setSelectedCategory} categories={cats} setCats={setCats} selectedCategory={selectedCategory} />
         }
         rightComponent={RigthComponent}
-        leftContainerStyle={{
-          justifyContent: "center",
-        }}
-        centerContainerStyle={{
-          justifyContent: "center",
-        }}
-        rightContainerStyle={{
-          justifyContent: "center",
-        }}
-        containerStyle={{
-          backgroundColor: "#4285F4",
-        }}
+        leftContainerStyle={{justifyContent: "center"}}
+        centerContainerStyle={{justifyContent: "center", alignItems: "flex-start", paddingLeft: 10}}
+        rightContainerStyle={{justifyContent: "center"}}
+        containerStyle={{backgroundColor: "#4285F4"}}
         />
       <FlatList
         data={data}
@@ -172,6 +165,7 @@ export default function Home() {
         placeholder_state={"Назва завдання"}
         state="tasks"
         />
+      <FlashMessage duration={3000} style={{borderRadius: 30, marginTop: 160, width: "80%"}} position={'top'} />
     </View>
   );
 }
@@ -195,6 +189,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginHorizontal: 8,
     borderRadius: 17,
+    borderWidth: 5,
   },
   buttonStyle: {
     backgroundColor: "#AD1457",
@@ -202,7 +197,7 @@ const styles = StyleSheet.create({
   titleStyle: {
     color: "#fff",
     fontWeight: "800",
-    fontSize: 13,
+    fontSize: 14,
   },
   emptyContainer: {
     flex: 1,

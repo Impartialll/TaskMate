@@ -30,7 +30,6 @@ const TaskStatistics = () => {
         data={data[interval]}
         width={screenWidth - 16}
         height={230}
-        yAxisLabel="Вик."
         yAxisInterval={1}
         chartConfig={{
             style: {

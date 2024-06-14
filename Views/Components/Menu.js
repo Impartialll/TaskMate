@@ -43,32 +43,31 @@ export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, 
           onDismiss={closeMenu}
           anchor={
             <Button
-            icon={() => <Entypo name="dots-three-vertical" size={14} color="black" />}
-            type="clear"
-            containerStyle={{}}
-            onPress={openMenu}
-            style={{justifyContent: "center", alignItems: "center", flex: 1}}
-          />
+              icon={() => <Entypo name="dots-three-vertical" size={14} color="black" />}
+              type="clear"
+              containerStyle={{}}
+              onPress={openMenu}
+              style={{justifyContent: "center", alignItems: "center", flex: 1}}
+              />
           }>
-          {/* <Menu.Item leadingIcon={() => <MaterialIcons name="category" size={24} color="black" />} onPress={() => {}} title="Категорії" /> */}
           <CategoriesMenu
-          categories={categories}
-          deleteCategory={deleteCategory}
-          />
+            categories={categories}
+            deleteCategory={deleteCategory}
+            />
           <Divider />
           <Menu.Item
-          leadingIcon={() => <Entypo name="plus" size={24} color="black" style={{paddingTop: 2,}} />}
-          onPress={createCategoryModal}
-          title="Нова категорія"
-          style={{justifyContent: "center", alignItems: "center", flex: 1}}
-          />
+            leadingIcon={() => <Entypo name="plus" size={24} color="black" style={{paddingTop: 2,}} />}
+            onPress={createCategoryModal}
+            title="Нова категорія"
+            style={{justifyContent: "center", alignItems: "center", flex: 1}}
+            />
         </Menu>
         <NewCategory
           visible={isModalVisible}
           onCreate={onCreate}
           onClose={onClose}
           closeMenu={closeMenu}
-        />
+          />
       </View>
   );
 };

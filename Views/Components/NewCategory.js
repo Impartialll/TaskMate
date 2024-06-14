@@ -29,7 +29,7 @@ export default function NewCategory({ visible, onClose, onCreate, closeMenu }) {
             animationType="slide"
             onRequestClose={handleClose}
         >
-            <TouchableWithoutFeedback onPress={onClose}>
+            <TouchableWithoutFeedback onPress={handleClose}>
                 <View style={styles.modalOverlay}>
                     <TouchableWithoutFeedback>
                         <View style={styles.modalContainer}>

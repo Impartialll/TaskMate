@@ -4,7 +4,7 @@ import { Button } from "@rneui/base";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function HeaderComponent({ categories, setCat, setCats }) {
+export default function HeaderComponent({ categories, setCat, setCats, selectedCategory }) {
 
   const deleteCategory = async (categoryId) => {
     try {
@@ -25,10 +25,10 @@ export default function HeaderComponent({ categories, setCat, setCats }) {
           key={item.id}
           title={item.name}
           buttonStyle={styles.buttonStyle}
-          containerStyle={styles.buttonContainer}
+          containerStyle={[styles.buttonContainer, {borderColor: selectedCategory === item.name ? "#AD1457" : "#fff"}]}
           titleStyle={styles.titleStyle}
           onPress={() => setCat(item.name)}
-          onLongPress={() => AsyncStorage.removeItem('categories')}
+          onLongPress={() => deleteCategory(item.id)}
         />
       ))}
     </View>
@@ -38,15 +38,15 @@ export default function HeaderComponent({ categories, setCat, setCats }) {
 const styles = StyleSheet.create({
   container: {
     height: "auto",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "row",
-
     backgroundColor: "transparent",
   },
   buttonContainer: {
-    marginHorizontal: 8,
+    marginHorizontal: 10,
     borderRadius: 17,
+    borderWidth: 5,
   },
   buttonStyle: {
     backgroundColor: "#fff",
@@ -54,6 +54,6 @@ const styles = StyleSheet.create({
   titleStyle: {
     color: "#AD1457",
     fontWeight: "800",
-    fontSize: 13,
+    fontSize: 14,
   },
 });
