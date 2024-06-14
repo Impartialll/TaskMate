@@ -1,29 +1,30 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { Button, Avatar } from '@rneui/base'
+import { StyleSheet, View } from 'react-native'
+import { Button, Avatar, Text } from '@rneui/base'
 
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AboutHeader({ navigation }) {
   return (
-    <View style={{flex: 1, alignItems: "center"}}>
-        <View style={{alignItems: "center", borderWidth: 1, marginTop: 50}}>
+    <View style={{ alignItems: "center", paddingBottom: 20}}>
+        <View style={{ alignItems: "center", marginTop: 30 }}>
             <Avatar
-            size={128}
-            rounded
-            icon={{ name: 'pencil', type: 'font-awesome' }}
-            containerStyle={{ backgroundColor: '#6733b9' }}
-            />
+              size={128}
+              rounded
+              icon={{ name: 'camera', type: 'font-awesome' }}
+              containerStyle={{ backgroundColor: '#AD1457' }}
+              />
+              <Text h4 style={{paddingTop: 10}} >User name</Text>
         </View>
-        <View style={{borderWidth: 1, position: "absolute", alignSelf: "flex-end"}}>
+        <View style={{ position: "absolute", alignSelf: "flex-end" }}>
             <Button
-            type='clear'
-            icon={<Ionicons name="settings-outline" size={28} color="black" />}
-            // containerStyle={{alignSelf: "flex-end", margin: 5}}
-            onPress={() => {
-                navigation.navigate("Settings");
-                }}
-                />
+              containerStyle={{ borderRadius: 30 }}
+              type='clear'
+              icon={<Ionicons name="settings-outline" size={28} color="black" />}
+              onPress={() => {
+                  navigation.navigate("Settings");
+                  }}
+              />
         </View>
     </View>
   )
