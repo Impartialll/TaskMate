@@ -32,7 +32,6 @@
     "expo-notifications": "^0.27.7",
     "expo-permissions": "^14.4.0",
     "expo-status-bar": "~1.11.1",
-    "json-server": "^1.0.0-alpha.23",
     "ngrok": "^5.0.0-beta.2",
     "react": "18.2.0",
     "react-native": "0.73.6",
