@@ -56,14 +56,30 @@ export default function RenderItem({ item, fetchTasks, navigation, categories })
     }
   };
 
-  const onLongPress = () => {
+  // const onLongPress = () => {
+  //   navigation.navigate("Subtasks", {
+  //     id: item.id,
+  //     name: item.name,
+  //     description: item.description,
+  //     category: item.category,
+  //     date: item.reminderDate,
+  //     categories: categories,
+  //   });
+  // };
+
+  const onLongPress = async () => {
+    const existingTasks = await AsyncStorage.getItem('tasks');
+    const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+    const task = tasksArray.find(t => t.id === item.id);
+  
     navigation.navigate("Subtasks", {
-      id: item.id,
-      name: item.name,
-      description: item.description,
-      category: item.category,
-      date: item.reminderDate,
+      id: task.id,
+      name: task.name,
+      description: task.description,
+      category: task.category,
+      date: task.reminderDate,
       categories: categories,
+      subtasks: task.subtasks || [],
     });
   };
 

@@ -1,7 +1,9 @@
 import React, { useLayoutEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { Header, Button, Text, FAB } from "@rneui/base";
 import { format, isToday, isTomorrow, isYesterday, differenceInDays } from "date-fns";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import uuid from 'react-native-uuid';
 
 import {
   useRoute,
@@ -9,19 +11,45 @@ import {
   useFocusEffect,
 } from "@react-navigation/native";
 
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { AntDesign } from "@expo/vector-icons";
-import { MaterialIcons } from '@expo/vector-icons';
 import SubMenu from "./Components/SubMenu";
 import NewSubtask from "./Components/NewSubtask";
+import SubRenderItem from "./Components/SubRenderItem";
 
 export default function Subtasks() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { id, name, description, category, date, categories } = route.params;
+  const { id, name, description, category, date, categories, subtasks } = route.params;
 
-  const [inputTaskName, setInputTaskName] = useState("");
+  const [subtaskList, setSubtaskList] = useState(subtasks);
   const [visible, setVisible] = useState(false);
+
+  const addSubtask = async (newSubtask) => {
+    const newSubtaskData = {
+      id: uuid.v4(),
+      name: newSubtask.trim(),
+    };
+
+    const updatedSubtasks = [...subtaskList, newSubtaskData];
+    setSubtaskList(updatedSubtasks);
+
+    const existingTasks = await AsyncStorage.getItem('tasks');
+    const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+    const taskIndex = tasksArray.findIndex(t => t.id === id);
+    tasksArray[taskIndex].subtasks = updatedSubtasks;
+    await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+  };
+
+  const deleteSubtask = async (subtaskId) => {
+    const updatedSubtasks = subtaskList.filter(subtask => subtask.id !== subtaskId);
+    setSubtaskList(updatedSubtasks);
+
+    const existingTasks = await AsyncStorage.getItem('tasks');
+    const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+    const taskIndex = tasksArray.findIndex(t => t.id === id);
+    tasksArray[taskIndex].subtasks = updatedSubtasks;
+    await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+  };
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -88,7 +116,11 @@ export default function Subtasks() {
   );
 
   const right = () => (
-      <SubMenu categories={categories} />
+    <SubMenu categories={categories} />
+  );
+
+  const renderItem = ({ item }) => (
+    <SubRenderItem item={item} deleteSubtask={deleteSubtask} />
   );
 
   return (
@@ -101,6 +133,13 @@ export default function Subtasks() {
         centerContainerStyle={[styles.headerContainerStyle, {alignContent: "center"}]}
         rightContainerStyle={[styles.headerContainerStyle, {}]}
         />
+      <FlatList
+        data={subtaskList}
+        keyExtractor={(item, index) => index.toString()}
+        ItemSeparatorComponent={() => <View style={{flex: 1, marginVertical: 10}}/>}
+        renderItem={renderItem}
+        style={{paddingTop: 20}}
+      />
       <FAB
         placement="right"
         style={styles.fabStyle}
@@ -112,7 +151,7 @@ export default function Subtasks() {
       <NewSubtask
         visible={visible}
         onClose={toggleOverlay}
-        // onCreate={}
+        onCreate={addSubtask}
         />
     </View>
   );

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Modal, TouchableWithoutFeedback } from 'react-native';
 import { Text, Button, Input } from '@rneui/base';
 

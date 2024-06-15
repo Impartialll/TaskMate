@@ -16,7 +16,7 @@ import FlashMessage from "react-native-flash-message";
 export default function Home() {
   const [cats, setCats] = useState([]);
   const [data, setData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const [isFABModalClosed, setIsFABModalClosed] = useState(false);
   const [date, setDate] = useState(new Date());
 
@@ -65,7 +65,13 @@ export default function Home() {
     try {
       const localData = await AsyncStorage.getItem("tasks");
       if (localData !== null) {
-        setData(JSON.parse(localData));
+        const tasks = JSON.parse(localData);
+        if (selectedCategory && selectedCategory !== "All") {
+          const filteredTasks = tasks.filter(task => task.category === selectedCategory);
+          setData(filteredTasks);
+        } else {
+          setData(tasks);
+        }
       } else {
         console.log("No tasks found in local storage.");
         setData([]);
@@ -79,6 +85,7 @@ export default function Home() {
   useEffect(() => {
     fetchCats();
     fetchTasks();
+    console.log(selectedCategory);
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -111,6 +118,7 @@ export default function Home() {
       categories={cats}
       setCats={setCats}
       fetchCats={fetchCats}
+      setCat={setSelectedCategory}
       />
   );
 
@@ -130,7 +138,7 @@ export default function Home() {
     return (
       <View style={styles.emptyContainer}>
         <Text h4 style={styles.emptyText}>
-          Завдань поки немає. Створіть нові завдання.
+          Завдань цієї категорії поки немає. Створіть нові завдання.
         </Text>
         <Image
           source={require("../assets/rounded-arrow.png")}
@@ -189,7 +197,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   listStyle: {
-    paddingBottom: "35%",
+    paddingBottom: "40%",
     marginTop: 10,
   },
   itemSeparator: {

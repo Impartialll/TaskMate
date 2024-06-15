@@ -8,7 +8,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-export default function CategoriesMenu({ categories, deleteCategory }) {
+export default function CategoriesMenu({ categories, deleteCategory, setCat }) {
     const [visible, setVisible] = useState(false);
 
     const openMenu = () => setVisible(true);
@@ -50,6 +50,7 @@ export default function CategoriesMenu({ categories, deleteCategory }) {
                         <Menu.Item
                         leadingIcon={leftIcon}
                         trailingIcon={() => rightIcon(item)}
+                        onPress={() => setCat(item.item.name)}
                         // titleStyle={{justifyContent: "center", alignItems: "center", flexDirection: "row"}}
                         contentStyle={{justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}
                         title={item.item.name}

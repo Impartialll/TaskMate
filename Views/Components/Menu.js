@@ -11,7 +11,7 @@ import NewCategory from './NewCategory';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, onClose, categories, setCats, fetchCats }) {
+export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, onClose, categories, setCats, fetchCats, setCat }) {
     const [visible, setVisible] = React.useState(false);
 
     const openMenu = () => setVisible(true);
@@ -54,6 +54,7 @@ export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, 
           <CategoriesMenu
             categories={categories}
             deleteCategory={deleteCategory}
+            setCat={setCat}
             />
           <Divider />
           <Menu.Item

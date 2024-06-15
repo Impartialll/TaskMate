@@ -8,7 +8,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-export default function SubCats({ categories }) {
+export default function SubCats({ categories, setCat }) {
     const [visible, setVisible] = useState(false);
 
     const openMenu = () => setVisible(true);
