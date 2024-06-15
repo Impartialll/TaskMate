@@ -2,24 +2,22 @@ import React, {useState} from 'react';
 import { StyleSheet, View, Modal, TouchableWithoutFeedback } from 'react-native';
 import { Text, Button, Input } from '@rneui/base';
 
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 
-export default function NewCategory({ visible, onClose, onCreate, closeMenu }) {
-    const [categoryName, setCategoryName] = useState('');
+export default function NewSubtask({ visible, onClose, onCreate }) {
+    const [subtaskName, setSubtaskName] = useState('');
 
     const handleCreate = () => {
-        if (categoryName.trim()) {
-            onCreate(categoryName);
-            setCategoryName('');
+        if (subtaskName.trim()) {
+            onCreate(subtaskName);
+            setSubtaskName('');
         }
         onClose();
-        closeMenu ? closeMenu() : null;
     };
 
     const handleClose = () => {
-        setCategoryName('');
+        setSubtaskName('');
         onClose();
-        closeMenu ? closeMenu() : null;
     };
 
     return (
@@ -33,32 +31,32 @@ export default function NewCategory({ visible, onClose, onCreate, closeMenu }) {
                 <View style={styles.modalOverlay}>
                     <TouchableWithoutFeedback>
                         <View style={styles.modalContainer}>
-                            <Text style={styles.modalTitle}>Нова категорія</Text>
+                            <Text style={styles.modalTitle}>Додати підзавдання</Text>
                             <Input
                                 inputStyle={{fontSize: 16}}
-                                placeholder="Назва категорії"
-                                leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
-                                onChangeText={(text) => setCategoryName(text)}
+                                placeholder="Назва підзавдання"
+                                leftIcon={<Entypo name="text-document" size={24} color="black" style={{padding: 5}} />}
+                                onChangeText={(text) => setSubtaskName(text)}
                             />
                             <View style={styles.closeSaveContainer}>
                                 <Button
-                                title="Скасувати"
-                                titleStyle={{fontSize: 16}}
-                                size="sm"
-                                containerStyle={styles.button}
-                                buttonStyle={{borderWidth: 1, borderRadius: 4}}
-                                onPress={handleClose}
-                                type="outline"
-                                />
+                                    title="Скасувати"
+                                    titleStyle={{fontSize: 16}}
+                                    size="sm"
+                                    containerStyle={styles.button}
+                                    buttonStyle={{borderWidth: 1, borderRadius: 4}}
+                                    onPress={handleClose}
+                                    type="outline"
+                                    />
                                 <Button
-                                title="Зберегти"
-                                titleStyle={{fontSize: 16}}
-                                size="sm"
-                                color="secondary"
-                                containerStyle={styles.button}
-                                onPress={handleCreate}
-                                type="solid"
-                                />
+                                    title="Зберегти"
+                                    titleStyle={{fontSize: 16}}
+                                    size="sm"
+                                    color="secondary"
+                                    containerStyle={styles.button}
+                                    onPress={handleCreate}
+                                    type="solid"
+                                    />
                             </View>
                         </View>
                     </TouchableWithoutFeedback>

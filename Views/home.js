@@ -94,7 +94,12 @@ export default function Home() {
 
   const navigation = useNavigation();
   const renderItem = ({ item }) => (
-    <RenderItem item={item} categories={cats} fetchTasks={fetchTasks} navigation={navigation} />
+    <RenderItem
+      item={item}
+      categories={cats}
+      fetchTasks={fetchTasks}
+      navigation={navigation}
+      />
   );
 
   const RigthComponent = () => (
@@ -140,7 +145,16 @@ export default function Home() {
       <Header
         leftComponent={LeftComponent}
         centerComponent={
-          <HeaderComponent setCat={setSelectedCategory} categories={cats} setCats={setCats} selectedCategory={selectedCategory} />
+          <HeaderComponent
+            setCat={setSelectedCategory}
+            categories={cats}
+            setCats={setCats}
+            selectedCategory={selectedCategory}
+            visible={menuModalVisible}
+            openModal={openCategoryModal}
+            onCreate={addCategory}
+            onClose={closeCategoryModal}
+            />
         }
         rightComponent={RigthComponent}
         leftContainerStyle={{justifyContent: "center"}}
@@ -165,7 +179,7 @@ export default function Home() {
         placeholder_state={"Назва завдання"}
         state="tasks"
         />
-      <FlashMessage duration={3000} style={{borderRadius: 30, marginTop: 160, width: "80%"}} position={'top'} />
+      <FlashMessage duration={3000} style={{borderRadius: 30, marginTop: 180, width: "80%"}} position={'top'} />
     </View>
   );
 }

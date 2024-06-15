@@ -41,6 +41,7 @@ export default function MyMenu({ createCategoryModal, isModalVisible, onCreate, 
         <Menu
           visible={visible}
           onDismiss={closeMenu}
+          style={{paddingRight: 20, paddingTop: 15}}
           anchor={
             <Button
               icon={() => <Entypo name="dots-three-vertical" size={14} color="black" />}

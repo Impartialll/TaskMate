@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ListItem, Avatar, Button, Text, Icon } from "@rneui/base";
 import { StyleSheet, View, Dimensions } from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -57,12 +58,21 @@ export default function RenderItem({ item, fetchTasks, navigation, categories })
 
   const onLongPress = () => {
     navigation.navigate("Subtasks", {
-      taskId: item.id,
-      taskName: item.name,
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      category: item.category,
+      date: item.reminderDate,
       categories: categories,
     });
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchTasks();
+    }, [])
+  );
+  
   const leftContent = (reset) => {
     return (
       <Button
@@ -85,11 +95,11 @@ export default function RenderItem({ item, fetchTasks, navigation, categories })
         leftContent={leftContent}
         containerStyle={styles.container}
         onPress={() => console.log(formatReminderDate(item.reminderDate))}
-      >
+        >
           <ListItem.Content style={{flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingVertical: 0}}>
             <FontAwesome5 name="running" size={24} color="black" style={{marginLeft: 5}} />
-            <ListItem.Title style={{width: 70,  textAlign: "center", fontWeight: "700"}}>{item.name}</ListItem.Title>
-            <ListItem.Subtitle style={{width: 50, textAlign: "center", fontWeight: "700"}}>{item.description}</ListItem.Subtitle>
+            <ListItem.Title style={{width: 80,  textAlign: "left", fontWeight: "700"}}>{item.name}</ListItem.Title>
+            <ListItem.Subtitle style={{width: 50, textAlign: "center", fontWeight: "700"}}>{"4/5"}</ListItem.Subtitle>
             <View style={{width: 100}} >
               <Text style={{marginRight: 5, textAlign: "center", fontWeight: "700", paddingVertical: 5}}>{formatReminderDate(item.reminderDate)[0]}</Text>
               <Text style={{marginRight: 5, textAlign: "center", fontWeight: "700", paddingVertical: 5}}>{formatReminderDate(item.reminderDate)[1]}</Text>
@@ -100,7 +110,7 @@ export default function RenderItem({ item, fetchTasks, navigation, categories })
             onPress={() => setChecked(!checked)}
             uncheckedIcon={<MaterialIcons name="radio-button-unchecked" size={28} color="black" />}
             checkedIcon={<MaterialIcons name="radio-button-checked" size={28} color="black" />}
-          />
+            />
       </ListItem.Swipeable>
   );
 }

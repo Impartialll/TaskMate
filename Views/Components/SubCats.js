@@ -8,69 +8,67 @@ import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-export default function CategoriesMenu({ categories, deleteCategory }) {
+export default function SubCats({ categories }) {
     const [visible, setVisible] = useState(false);
 
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
 
+    const cats = [...categories];
+
     const handleCategoriesPress = () => {
-        if (categories.length > 0) {
+        if (cats.length > 0) {
             openMenu();
         } else {
             showMessage({
                 message: "Категорій поки немає.",
-                description: "Ви можете створити нові категорії за допомогою іншої кнопки.",
+                description: "Ви можете створити нову категорію у головному меню.",
                 type: "info",
             });
         }
     };
 
     const leftIcon = () => (
-        <FontAwesome name="camera" size={20} color="black" style={{paddingTop: 12}} />
+        <FontAwesome name="camera" size={20} color="black" style={{paddingTop: 3}} />
     );
 
-    const rightIcon = ({ item }) => (
+    const rightIcon = () => (
         <Button
             type='clear'
             size='sm'
             icon={<FontAwesome name="trash-o" size={24} color="#AD1457" />}
-            onPress={() => deleteCategory(item.id)}
+            onPress={() => deleteCategory(item.item.id)}
             containerStyle={{width: "130%", height: "90%", justifyContent: "center", alignItems: "center" }}
             buttonStyle={{justifyContent: "center", alignItems: "center"}}
             />
     );
 
-    const ItemsList = () => {
-        return (
+    const ItemsList = () => (
+        <View>
             <FlatList
-                data={categories}
+                data={cats}
                 keyExtractor={(item) => item.id}
                 renderItem={(item) =>
-                        <Menu.Item
-                        leadingIcon={leftIcon}
-                        trailingIcon={() => rightIcon(item)}
+                    <Menu.Item
+                    leadingIcon={leftIcon}
                         // titleStyle={{justifyContent: "center", alignItems: "center", flexDirection: "row"}}
                         contentStyle={{justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}
                         title={item.item.name}
                         />
                         }
-                ItemSeparatorComponent={() => <Divider />}
-                style={{ maxHeight: 200 }}
+                        ItemSeparatorComponent={() => <Divider />}
+                        style={{ maxHeight: 200 }}
                 />
-        );
-    };
+        </View>
+    );
 
-    const CategoriesButton = () => {
-        return (
-            <Menu.Item
-                leadingIcon={() => <MaterialIcons name="category" size={24} color="black" />}
-                onPress={handleCategoriesPress}
-                contentStyle={{justifyContent: "center", alignItems: "flex-start", marginRight: 12}}
-                title="Категорії"
-                />
-        );
-    };
+    const CategoriesButton = () => (
+        <Menu.Item
+            title="Обрати категорію"
+            leadingIcon={() => <MaterialIcons name="category" size={24} color="black" />}
+            onPress={handleCategoriesPress}
+            />
+    );
 
   return (
     <View
@@ -81,7 +79,7 @@ export default function CategoriesMenu({ categories, deleteCategory }) {
             alignItems: "center"
         }}>
         <Menu
-            contentStyle={{marginRight: 145, marginTop: 30}}
+            contentStyle={{marginRight: 170, marginTop: 30}}
             visible={visible}
             onDismiss={closeMenu}
             anchor={<CategoriesButton/>}
@@ -91,5 +89,3 @@ export default function CategoriesMenu({ categories, deleteCategory }) {
     </View>
   )
 }
-
-const styles = StyleSheet.create({});
