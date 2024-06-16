@@ -19,7 +19,7 @@ import SubRenderItem from "./Components/SubRenderItem";
 export default function Subtasks() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { id, name, description, category, date, categories, subtasks } = route.params;
+  const { id, name, description, category, date, categories, subtasks, onSubtaskCompletionChange  } = route.params;
 
   const [subtaskList, setSubtaskList] = useState(subtasks);
   const [visible, setVisible] = useState(false);
@@ -28,6 +28,7 @@ export default function Subtasks() {
     const newSubtaskData = {
       id: uuid.v4(),
       name: newSubtask.trim(),
+      checked: false,
     };
 
     const updatedSubtasks = [...subtaskList, newSubtaskData];
@@ -38,6 +39,21 @@ export default function Subtasks() {
     const taskIndex = tasksArray.findIndex(t => t.id === id);
     tasksArray[taskIndex].subtasks = updatedSubtasks;
     await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+  };
+
+  const updateSubtaskStatus = async (subtaskId, checked) => {
+    const updatedSubtasks = subtaskList.map(subtask => 
+      subtask.id === subtaskId ? { ...subtask, checked } : subtask
+    );
+    setSubtaskList(updatedSubtasks);
+
+    const existingTasks = await AsyncStorage.getItem('tasks');
+    const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+    const taskIndex = tasksArray.findIndex(t => t.id === id);
+    if (taskIndex !== -1) {
+      tasksArray[taskIndex].subtasks = updatedSubtasks;
+      await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+    }
   };
 
   const deleteSubtask = async (subtaskId) => {
@@ -120,7 +136,12 @@ export default function Subtasks() {
   );
 
   const renderItem = ({ item }) => (
-    <SubRenderItem item={item} deleteSubtask={deleteSubtask} />
+    <SubRenderItem
+      item={item}
+      deleteSubtask={deleteSubtask}
+      updateStatus={updateSubtaskStatus}
+      // onSubtaskCompletionChange={onSubtaskCompletionChange}
+      />
   );
 
   return (

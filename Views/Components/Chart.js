@@ -24,7 +24,7 @@ const TaskStatistics = () => {
   };
 
   return (
-    <View style={{ flex: 1, alignItems: "center", marginTop: 50 }}>
+    <View style={{ flex: 1, alignItems: "center", marginTop: 30 }}>
       <Text h4 style={{ fontSize: 18, textAlign: 'center', marginBottom: 16 }}>Статистика виконаних завдань</Text>
       <LineChart
         data={data[interval]}

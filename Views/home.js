@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, FlatList, View, Image } from "react-native";
 import { Header, Button, Text } from "@rneui/base";
-
 import { useNavigation } from "@react-navigation/native";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { isToday, isYesterday, parseISO } from "date-fns";
 import uuid from 'react-native-uuid';
 
 import HeaderComponent from "./Components/Header";
@@ -61,16 +60,46 @@ export default function Home() {
     fetchCats();
   };
 
+  // const fetchTasks = async () => {
+  //   try {
+  //     const localData = await AsyncStorage.getItem("tasks");
+  //     if (localData !== null) {
+  //       const tasks = JSON.parse(localData);
+  //       if (selectedCategory && selectedCategory !== "All") {
+  //         const filteredTasks = tasks.filter(task => task.category === selectedCategory);
+  //         setData(filteredTasks);
+  //       } else {
+  //         setData(tasks);
+  //       }
+  //     } else {
+  //       console.log("No tasks found in local storage.");
+  //       setData([]);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //     setData([]);
+  //   }
+  // };
+
   const fetchTasks = async () => {
     try {
       const localData = await AsyncStorage.getItem("tasks");
       if (localData !== null) {
         const tasks = JSON.parse(localData);
+  
+        const filteredTasks = tasks.filter(task => {
+          if (task.completed) {
+            const reminderDate = parseISO(task.reminderDate);
+            return !isYesterday(reminderDate);
+          }
+          return true;
+        });
+  
         if (selectedCategory && selectedCategory !== "All") {
-          const filteredTasks = tasks.filter(task => task.category === selectedCategory);
-          setData(filteredTasks);
+          const categoryFilteredTasks = filteredTasks.filter(task => task.category === selectedCategory);
+          setData(categoryFilteredTasks);
         } else {
-          setData(tasks);
+          setData(filteredTasks);
         }
       } else {
         console.log("No tasks found in local storage.");
@@ -85,7 +114,6 @@ export default function Home() {
   useEffect(() => {
     fetchCats();
     fetchTasks();
-    console.log(selectedCategory);
   }, [selectedCategory]);
 
   useEffect(() => {

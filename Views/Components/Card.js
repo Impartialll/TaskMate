@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Pressable } from 'react-native';
 import { Text, Card, Button } from "@rneui/base";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProgressBar } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
 import { differenceInDays, differenceInMinutes, isToday, isPast, isTomorrow, isYesterday, parseISO, format } from 'date-fns';
@@ -14,10 +15,10 @@ export default function MyCard({ item, navigation }) {
   
   const MyProgress = () => (
       <ProgressBar
-      progress={Math.random()}
-      color={"yellow"}
-      style={styles.progressBar} 
-      />
+        progress={Math.random()}
+        color={"yellow"}
+        style={styles.progressBar} 
+        />
     );
 
     function getDaysEnding(days) {
@@ -73,15 +74,25 @@ export default function MyCard({ item, navigation }) {
     }
   }
 
+  const onLongPress = async () => {
+    const existingGoals = await AsyncStorage.getItem('goals');
+    const goalsArray = existingGoals ? JSON.parse(existingGoals) : [];
+    const goal = goalsArray.find(t => t.id === item.id);
+  
+    navigation.navigate("Goal Subtasks", {
+      goal: goal,
+      id: goal.id,
+      name: goal.name,
+      description: goal.description,
+      date: goal.reminderDate,
+      subgoals: goal.subgoals || [],
+    });
+  };
+
   return (
         <Pressable
               key={item.id}
-              onLongPress={() => {
-                navigation.navigate("Goal Subtasks", {
-                  goalName: item.name,
-                  goalId: item.id,
-                });
-              }}>
+              onLongPress={onLongPress}>
           <Card containerStyle={styles.card}>
             <View style={[styles.containerTitle, {backgroundColor: getTaskStatus(item.reminderDate)}]}>
               <View style={styles.titleLeft}>

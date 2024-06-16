@@ -1,12 +1,11 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Button, Avatar, Text } from '@rneui/base'
-
 import { Ionicons } from '@expo/vector-icons';
 
 export default function AboutHeader({ navigation }) {
   return (
-    <View style={{ alignItems: "center", paddingBottom: 20}}>
+    <View style={{ alignItems: "center", paddingBottom: 15}}>
         <View style={{ alignItems: "center", marginTop: 30 }}>
             <Avatar
               size={128}

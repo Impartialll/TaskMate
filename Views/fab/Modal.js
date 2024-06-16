@@ -85,6 +85,7 @@ export default function MyModal({ isVisible, toggleOverlay, updateData, date, se
         name: name.trim(),
         description: description.trim(),
         category: "none",
+        completed: false,
         reminderDate: reminderDate ? reminderDate.toISOString() : null,
       };
       const existingTasks = await AsyncStorage.getItem('tasks');

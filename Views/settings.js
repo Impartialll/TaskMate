@@ -5,7 +5,7 @@ import { useRoute, useNavigation, useFocusEffect } from "@react-navigation/nativ
 export default function Settings() {
   return (
     <View>
-      <Text>Settings</Text>
+      <Text>Налаштування</Text>
     </View>
   )
 }

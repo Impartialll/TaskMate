@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native'
 import { ListItem, Text, Button } from '@rneui/base'
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function SubRenderItem({ item, deleteSubtask, updateStatus }) {
-    const [checked, setChecked] = useState(item.checked);
+export default function SubGoalRenderItem({ item, deleteSubtask }) {
+    const [checked, setChecked] = useState(false);
 
     const leftContent = (reset) => {
         return (
@@ -22,7 +22,7 @@ export default function SubRenderItem({ item, deleteSubtask, updateStatus }) {
 
     const toggleSubtaskCompletion = () => {
       setChecked(!checked);
-      updateStatus(item.id, !checked);
+      onSubtaskCompletionChange(item.id, !checked);
     };
   return (
     <ListItem.Swipeable
