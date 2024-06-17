@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { ListItem, Text, Button } from '@rneui/base'
 import { MaterialIcons } from '@expo/vector-icons';
 
+
 export default function SubRenderItem({ item, deleteSubtask, updateStatus }) {
     const [checked, setChecked] = useState(item.checked);
 
@@ -24,6 +25,7 @@ export default function SubRenderItem({ item, deleteSubtask, updateStatus }) {
       setChecked(!checked);
       updateStatus(item.id, !checked);
     };
+
   return (
     <ListItem.Swipeable
       bottomDivider

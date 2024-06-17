@@ -8,9 +8,9 @@ import uuid from 'react-native-uuid';
 
 import HeaderComponent from "./Components/Header";
 import RenderItem from "./Components/RenderItem";
-import HomeFAB from "./fab/FAB";
 import MyMenu from "./Components/Menu";
 import FlashMessage from "react-native-flash-message";
+import MyFAB from "./fab/FAB";
 
 export default function Home() {
   const [cats, setCats] = useState([]);
@@ -206,7 +206,7 @@ export default function Home() {
         ItemSeparatorComponent={() => <View style={styles.itemSeparator} />}
         contentContainerStyle={styles.listStyle}
         />
-      <HomeFAB
+      <MyFAB
         onClose={handleModalClose}
         updateData={fetchTasks}
         date={date}

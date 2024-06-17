@@ -12,7 +12,7 @@ import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
 import { scheduleNotification } from "../notifications/NotificationService";
 
-export default function MyModal({ isVisible, toggleOverlay, updateData, date, setDate, title_state, placeholder_state, state }) {
+export default function MyModal({ isVisible, toggleOverlay, updateData, date, setDate, title_state, placeholder_state, state, addSubtask }) {
   const [inputName, setName] = useState("");
   const [inputDescription, setDescriptoion] = useState("");
   const [formattedDate, setFormattedDate] = useState(date.getHours());
@@ -73,6 +73,8 @@ export default function MyModal({ isVisible, toggleOverlay, updateData, date, se
         addTask(inputName, inputDescription, date);
       } else if (state === "goals") {
         addGoal(inputName, inputDescription, date)
+      } else if (state === "subgoals") {
+        addSubtask(inputName, date);
       }
     }
     onCloseModal();
@@ -122,6 +124,21 @@ export default function MyModal({ isVisible, toggleOverlay, updateData, date, se
     }
   };
 
+  // const loadSubGoals = async () => {
+  //   try {
+  //     const existingTasks = await AsyncStorage.getItem('goals');
+  //     if (existingTasks) {
+  //       const tasksArray = JSON.parse(existingTasks);
+  //       const updatedSubgoals = tasksArray.length > 0 ? tasksArray[0].subgoals : [];
+  //       setSubGoalsList(updatedSubgoals);
+  //     } else {
+  //       setSubGoalsList([]);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error loading subgoals from AsyncStorage:', error);
+  //   }
+  // };
+
   useEffect(() => {
     if (isVisible) {
       setDate(roundToNearestTenMinutes(new Date()));
@@ -151,12 +168,13 @@ export default function MyModal({ isVisible, toggleOverlay, updateData, date, se
                   leftIcon={<FontAwesome5 name="running" size={24} color="black" style={{padding: 5}} />}
                   onChangeText={(text) => setName(text)}
                   />
-                <Input
+                  {state != "subgoals" ? (<Input
                   inputStyle={{fontSize: 16}}
                   placeholder="Опис (не обов'язково)"
                   leftIcon={<MaterialCommunityIcons name="human" size={24} color="black" style={{padding: 3}} />}
                   onChangeText={(text) => setDescriptoion(text)}
-                  />
+                  />) : (null)}
+
               <View style={styles.dateTimePickerContainer}>
                 <Button 
                   containerStyle={{paddingHorizontal: 5}}

@@ -6,7 +6,7 @@ import { Entypo } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import SubCats from './SubCats';
 
-export default function SubMenu({ createCategoryModal, isModalVisible, onCreate, onClose, categories, setCats, fetchCats }) {
+export default function SubMenu({ createCategoryModal, isModalVisible, onCreate, onClose, categories, setCats, fetchCat, item }) {
     const [visible, setVisible] = React.useState(false);
 
     const openMenu = () => setVisible(true);
@@ -33,7 +33,7 @@ export default function SubMenu({ createCategoryModal, isModalVisible, onCreate,
               style={{justifyContent: "center", alignItems: "center", flex: 1}}
               />
           }>
-          <SubCats categories={categories} />
+          <SubCats categories={categories} item={item} fetchCat={fetchCat} />
         <Menu.Item
             title="Змінити назву"
             leadingIcon={() => <FontAwesome6 name="pen" size={17} color="black" style={{paddingLeft: 4, paddingTop: 3}} />}

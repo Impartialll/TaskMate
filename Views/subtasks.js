@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { Header, Button, Text, FAB } from "@rneui/base";
 import { format, isToday, isTomorrow, isYesterday, differenceInDays } from "date-fns";
@@ -19,10 +19,44 @@ import SubRenderItem from "./Components/SubRenderItem";
 export default function Subtasks() {
   const route = useRoute();
   const navigation = useNavigation();
-  const { id, name, description, category, date, categories, subtasks, onSubtaskCompletionChange  } = route.params;
+  const { task, id, name, description, category, date, categories, subtasks, onSubtaskCompletionChange  } = route.params;
 
   const [subtaskList, setSubtaskList] = useState(subtasks);
   const [visible, setVisible] = useState(false);
+
+  const [cat, setCat] = useState("Без категорії");
+
+  const fetchCategory = async () => {
+    const categoryName = await getTaskCategory(id);
+    setCat(categoryName);
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  }, [id]);
+
+  const getTaskCategory = async (taskId) => {
+    try {
+      const existingTasks = await AsyncStorage.getItem('tasks');
+      if (!existingTasks) {
+        console.error("No tasks found");
+        return "Без категорії";
+      }
+  
+      const tasksArray = JSON.parse(existingTasks);
+      const task = tasksArray.find(task => task.id === taskId);
+  
+      if (!task) {
+        console.error(`Task with id ${taskId} not found`);
+        return "Без категорії";
+      }
+  
+      return (task.category == "none" || !task.category) ? "Без категорії" : task.category;
+    } catch (error) {
+      console.error("Error retrieving the task category:", error);
+      return "Без категорії";
+    }
+  };
 
   const addSubtask = async (newSubtask) => {
     const newSubtaskData = {
@@ -118,13 +152,14 @@ export default function Subtasks() {
   );
 
   const center = () => (
-    <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center"}} >
+    <View style={{flexDirection: "row", justifyContent: "center", alignItems: "center", paddingLeft: 30}} >
       <View style={styles.containerTaskNameStyle}>
         <Text h4 style={styles.taskNameStyle}>
           {name}
         </Text>
       </View>
-      <View style={{paddingLeft: 40}} >
+      <View style={{paddingLeft: 30}} >
+        <Text style={styles.catStyle}>{cat}</Text>
         <Text style={{textAlign: "center", fontWeight: "700"}} >{formatReminderDate(date)[0]}</Text>
         <Text style={{textAlign: "center", fontWeight: "700"}} >{formatReminderDate(date)[1]}</Text>
       </View>
@@ -132,7 +167,7 @@ export default function Subtasks() {
   );
 
   const right = () => (
-    <SubMenu categories={categories} />
+    <SubMenu categories={categories} item={task} fetchCat={fetchCategory} />
   );
 
   const renderItem = ({ item }) => (
@@ -189,7 +224,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: "#fff",
     backgroundColor: "#AD1457",
-    alignItems: "center"
+    alignItems: "center",
   },
   taskNameStyle: {
     paddingHorizontal: 15,
@@ -200,4 +235,15 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingBottom: 20,
   },
+  catStyle: {
+    textAlign: "center",
+    fontWeight: "900",
+    borderWidth: 2,
+    borderRadius: 15,
+    borderColor: "#fff",
+    backgroundColor: "#AD1457",
+    paddingVertical: 5,
+    paddingHorizontal: 7,
+    color: "#fff"
+  }
 });

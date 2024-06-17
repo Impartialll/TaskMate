@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { StyleSheet, View, ScrollView, FlatList, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { Text } from "@rneui/base";
 
 import MyFAB from "./fab/FAB";
@@ -26,6 +26,12 @@ export default function Goal() {
       console.error("Error fetching goals:", error);
     }
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchGoals();
+    }, [])
+  );
 
   useEffect(() => {
     fetchGoals();

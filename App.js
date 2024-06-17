@@ -1,7 +1,6 @@
 import "react-native-gesture-handler";
-import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { PaperProvider } from "react-native-paper";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 

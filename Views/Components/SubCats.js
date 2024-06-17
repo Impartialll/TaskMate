@@ -1,20 +1,37 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, FlatList, Alert } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 import { Menu, Divider } from 'react-native-paper'
 import { Button, Text } from '@rneui/base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage, hideMessage } from "react-native-flash-message";
 
-import { FontAwesome } from '@expo/vector-icons';
+import IconSet from './IconSet';
+
 import { MaterialIcons } from '@expo/vector-icons';
 
-
-export default function SubCats({ categories, setCat }) {
+export default function SubCats({ categories, setCat, item, fetchCat }) {
     const [visible, setVisible] = useState(false);
 
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
 
     const cats = [...categories];
+
+    const updateTaskCategory = async (taskId, newCategory) => {
+        try {
+            const existingTasks = await AsyncStorage.getItem('tasks');
+            const tasksArray = existingTasks ? JSON.parse(existingTasks) : [];
+            const taskIndex = tasksArray.findIndex(task => task.id === taskId);
+            
+            if (taskIndex !== -1) {
+                tasksArray[taskIndex].category = newCategory;
+                await AsyncStorage.setItem('tasks', JSON.stringify(tasksArray));
+            }
+            fetchCat();
+        } catch (error) {
+          console.error("Error updating the task category:", error);
+        }
+    };
 
     const handleCategoriesPress = () => {
         if (cats.length > 0) {
@@ -28,46 +45,48 @@ export default function SubCats({ categories, setCat }) {
         }
     };
 
-    const leftIcon = () => (
-        <FontAwesome name="camera" size={20} color="black" style={{paddingTop: 3}} />
-    );
+    const onCategoryPress = (categoryName) => {
+        updateTaskCategory(item.id, categoryName);
+        closeMenu();
+      };
 
-    const rightIcon = () => (
-        <Button
-            type='clear'
-            size='sm'
-            icon={<FontAwesome name="trash-o" size={24} color="#AD1457" />}
-            onPress={() => deleteCategory(item.item.id)}
-            containerStyle={{width: "130%", height: "90%", justifyContent: "center", alignItems: "center" }}
-            buttonStyle={{justifyContent: "center", alignItems: "center"}}
-            />
+    const leftIcon = () => (
+        <IconSet size={24} style={{paddingTop: 3}} />
     );
 
     const ItemsList = () => (
         <View>
+            <Text style={{fontSize: 16, fontWeight: "700", paddingLeft: 10, paddingBottom: 5}}>Категорії</Text>
+            <Divider bold />
             <FlatList
                 data={cats}
                 keyExtractor={(item) => item.id}
                 renderItem={(item) =>
                     <Menu.Item
                     leadingIcon={leftIcon}
-                        // titleStyle={{justifyContent: "center", alignItems: "center", flexDirection: "row"}}
+                        titleStyle={{fontSize: 16}}
                         contentStyle={{justifyContent: "flex-start", alignItems: "center", flexDirection: "row"}}
                         title={item.item.name}
+                        onPress={() => {
+                            onCategoryPress(item.item.name);
+                        }}
                         />
                         }
-                        ItemSeparatorComponent={() => <Divider />}
+                        ItemSeparatorComponent={() => <Divider/>}
                         style={{ maxHeight: 200 }}
                 />
         </View>
     );
 
     const CategoriesButton = () => (
+        <>
         <Menu.Item
             title="Обрати категорію"
             leadingIcon={() => <MaterialIcons name="category" size={24} color="black" />}
             onPress={handleCategoriesPress}
             />
+        <Divider/>
+        </>
     );
 
   return (

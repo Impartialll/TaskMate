@@ -194,6 +194,7 @@ export default function RenderItem({ item, fetchTasks, navigation, categories })
     const task = tasksArray.find(t => t.id === item.id);
   
     navigation.navigate("Subtasks", {
+      task: item,
       id: task.id,
       name: task.name,
       description: task.description,

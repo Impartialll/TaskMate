@@ -52,9 +52,9 @@ const TaskStatistics = () => {
         // bezier
       />
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20 }}>
-        <Button title="Цей тиждень" onPress={() => setInterval('week')} />
-        <Button title="Цей місяць" onPress={() => setInterval('month')} />
-        <Button title="Цей рік" onPress={() => setInterval('year')} />
+        <Button type='clear' title="Цей тиждень" onPress={() => setInterval('week')} />
+        <Button type='clear' title="Цей місяць" onPress={() => setInterval('month')} />
+        <Button type='clear' title="Цей рік" onPress={() => setInterval('year')} />
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { Button, Text } from '@rneui/base';
 import { AntDesign } from '@expo/vector-icons';
 import { ProgressBar } from 'react-native-paper';
@@ -29,18 +29,20 @@ export default function SubGoalHeader({ item, name, description, id, date, navig
   );
 
   return (
-    <View style={styles.container}>
-      <View style={{alignSelf: "flex-start", paddingHorizontal: 5, paddingVertical: 10}} >
-        <Left/>
-      </View>
-      <View style={{justifyContent: "center", flex: 1, paddingRight: 30, paddingVertical: 20}}>
-        <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center",  paddingBottom: 5}} >
-          <Text h3 style={{textAlign: "center", paddingRight: 20, maxWidth: 190}} >{name}</Text>
-          <Text style={{fontWeight: "700", fontSize: 16, textAlign: "center", paddingTop: 7}}>{formatDateToDDMMYYYY(item.reminderDate)}</Text>
+    <Pressable>
+      <View style={styles.container}>
+        <View style={{alignSelf: "flex-start", paddingHorizontal: 5, paddingVertical: 10}} >
+          <Left/>
         </View>
-        <MyProgress/>
+        <View style={{justifyContent: "center", flex: 1, paddingRight: 30, paddingVertical: 20}}>
+          <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center",  paddingBottom: 15}} >
+            <Text style={styles.title}>{name}</Text>
+            <Text style={{fontWeight: "700", fontSize: 16, textAlign: "center", paddingTop: 7, paddingLeft: 15}}>{formatDateToDDMMYYYY(item.reminderDate)}</Text>
+          </View>
+          <MyProgress/>
+        </View>
       </View>
-    </View>
+    </Pressable>
   )
 }
 
@@ -54,7 +56,21 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderRadius: 10,
       borderColor: "black",
-      height: 25,
+      height: 30,
       width: '100%',
     },
-})
+    title: {
+      fontSize: 32,
+      fontWeight: "700",
+      color: "#fff",
+      padding: 7,
+      textAlign: "center",
+      maxWidth: 200,
+      borderColor: "black",
+      borderWidth: 4,
+      borderRadius: 15,
+      borderColor: "#fff",
+      backgroundColor: "#AD1457",
+      alignItems: "center",
+    }
+});

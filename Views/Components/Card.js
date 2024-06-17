@@ -96,7 +96,7 @@ export default function MyCard({ item, navigation }) {
           <Card containerStyle={styles.card}>
             <View style={[styles.containerTitle, {backgroundColor: getTaskStatus(item.reminderDate)}]}>
               <View style={styles.titleLeft}>
-                <Text h4 style={styles.textName} >{item.name}</Text>
+                <Text h4 style={styles.textName}>{item.name}</Text>
               </View>
               <View style={styles.titleRight}>
                 <MyProgress/>

@@ -6,6 +6,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { FontAwesome } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import IconSet from './IconSet';
 
 
 export default function CategoriesMenu({ categories, deleteCategory, setCat }) {
@@ -27,7 +28,8 @@ export default function CategoriesMenu({ categories, deleteCategory, setCat }) {
     };
 
     const leftIcon = () => (
-        <FontAwesome name="camera" size={20} color="black" style={{paddingTop: 12}} />
+        <IconSet size={20} color="black" style={{paddingTop: 12}} />
+        // <FontAwesome name="camera" size={20} color="black" style={{paddingTop: 12}} />
     );
 
     const rightIcon = ({ item }) => (
